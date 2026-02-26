@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,8 +11,9 @@
 
   <nav>
     <a href="#" class="active">[/]</a>
+    <a href="#now">[/Me Rn...]</a>
     <a href="#work">[/work]</a>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">[&#9790;]</button>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">[&#9728;]</button>
   </nav>
 
   <main>
@@ -30,6 +31,40 @@
     <p>I want to build things that remain in my absence, enriching the community — big or small — after I'm gone. So I build healthcare products, run projects, and make art. My business exists to help novice and amateur musicians make their first records, because that first record matters, even if there is no second.</p>
 
     <h1 class="quote">That which can be destroyed by the truth should be.</h1>
+
+    <hr class="section-divider">
+
+    <div class="now-grid" id="now">
+      <div class="now-panel">
+        <h3>What I'm up to</h3>
+        <ul class="now-list">
+          <li>learning how to vibe code</li>
+          <li>building out my studio business — I've never owned a business before!</li>
+          <li>working on an EP for release this summer with a collaborator, and designing lots of merch and art to go with it... I want to try more world building!</li>
+        </ul>
+      </div>
+      <div class="now-panel">
+        <h3>Now Reading</h3>
+        <ul class="now-list">
+          <li><em>The Souls of Black Folk</em> — W.E.B. Du Bois</li>
+          <li><em>A People's History of the United States</em> — Howard Zinn</li>
+          <li><em>Man and Society, Vol. 1</em> — John Plamenatz</li>
+          <li><em>The Dark Forest</em> — Liu Cixin</li>
+        </ul>
+        <a href="https://www.goodreads.com/ianreadsb00ks" target="_blank" rel="noopener">more about what I'm reading on goodreads</a>
+      </div>
+      <div class="now-panel now-panel--solo">
+        <h3>Things I Collect</h3>
+        <ul class="now-list">
+          <li>Books — I have a small library, I love a good, old hardcover!</li>
+          <li>Bookmarks — to go with the books, duh. But also they document all the book stores I've been to.</li>
+          <li>Vinyls — I love to grab something old, unknown. That's how I discover new music more than via algorithm.</li>
+          <li>Wires — I have way too many. Don't know when I'll need em but I have em just in case.</li>
+        </ul>
+      </div>
+    </div>
+
+    <hr class="section-divider">
 
     <h2 id="work">Work</h2>
 
@@ -69,9 +104,10 @@
     const toggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
 
-    if (localStorage.getItem('theme') === 'dark') {
-      html.classList.add('dark');
-      toggle.textContent = '[☀]';
+    // Default is dark (set on <html>); override only if user explicitly chose light
+    if (localStorage.getItem('theme') === 'light') {
+      html.classList.remove('dark');
+      toggle.textContent = '[☾]';
     }
 
     toggle.addEventListener('click', () => {

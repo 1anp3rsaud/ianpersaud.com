@@ -125,6 +125,57 @@ main h2 {
   opacity: 0.85;
 }
 
+/* ── Section dividers ── */
+
+.section-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin-top: 2rem;
+}
+
+/* ── Now grid ── */
+
+.now-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.now-panel {
+  border: 1px solid var(--border);
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.now-list {
+  margin-top: 0.5rem;
+  padding-left: 1rem;
+  opacity: 0.7;
+}
+
+.now-list li {
+  margin-top: 0.25rem;
+}
+
+.now-panel--solo {
+  grid-column: 1 / -1;
+  max-width: calc(50% - 0.5rem);
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+}
+
+.now-panel a {
+  display: block;
+  margin-top: 0.5rem;
+  opacity: 0.5;
+}
+
+.now-panel a:hover {
+  opacity: 1;
+}
+
 /* ── Projects ── */
 
 .projects {
