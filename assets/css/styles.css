@@ -1,0 +1,193 @@
+@import url('https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;700&display=swap');
+
+:root {
+  --bg: #fff;
+  --text: #000;
+  --border: #afafaf;
+}
+
+.dark {
+  --bg: #0a0a0a;
+  --text: #e5e5e5;
+  --border: #404040;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  overflow-y: scroll;
+  background: var(--bg);
+}
+
+body {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--bg);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  -webkit-font-smoothing: antialiased;
+  transition: background 0.2s, color 0.2s;
+}
+
+h1, h2, h3 {
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 1.25rem;
+  margin-top: 2rem;
+}
+
+h1:first-child {
+  margin-top: 0;
+}
+
+h2 {
+  font-size: 0.9rem;
+  margin-top: 2rem;
+}
+
+h3 {
+  font-size: 0.75rem;
+}
+
+p {
+  margin-top: 0.4rem;
+}
+
+a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+a:hover {
+  opacity: 0.6;
+}
+
+/* ── Nav ── */
+
+nav {
+  display: flex;
+  align-items: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+nav a {
+  margin-right: 1rem;
+  opacity: 0.4;
+}
+
+nav a.active {
+  opacity: 1;
+}
+
+.theme-toggle {
+  margin-left: auto;
+  cursor: pointer;
+  opacity: 0.4;
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.75rem;
+  padding: 0;
+}
+
+.theme-toggle:hover {
+  opacity: 1;
+}
+
+/* ── Main content ── */
+
+main > * + * {
+  margin-top: 0.4rem;
+}
+
+main h2 {
+  margin-top: 2rem;
+}
+
+.quote {
+  text-align: center;
+  font-style: italic;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+/* ── Projects ── */
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.project {
+  border: 1px solid var(--border);
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.project p {
+  margin-top: 0.25rem;
+  opacity: 0.7;
+}
+
+.project a {
+  display: inline-block;
+  margin-top: 0.5rem;
+  opacity: 0.5;
+}
+
+.project a:hover {
+  opacity: 1;
+}
+
+.project-links {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.project-links a {
+  opacity: 0.5;
+}
+
+.project-links a:hover {
+  opacity: 1;
+}
+
+.project-links svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+}
+
+/* ── Footer ── */
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  opacity: 0.6;
+}
+
+.footer-links a {
+  margin-right: 1rem;
+}

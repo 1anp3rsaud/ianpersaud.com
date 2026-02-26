@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ian Persaud</title>
+  <meta name="description" content="Portfolio — Ian Persaud">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <nav>
+    <a href="#" class="active">[/]</a>
+    <a href="#work">[/work]</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">[&#9790;]</button>
+  </nav>
+
+  <main>
+    <h1>Ian Persaud</h1>
+    <p>I'm a manager of products, programs, and projects in the tech space with a preference for solving hard problems in healthcare. I'm also a business owner, an artist/musician, a writer, and a big reader.</p>
+
+    <h2>When</h2>
+    <p>I've been a product &amp; project manager since 2021, I've been writing music since 2015, and I've been worried about healthcare since 2010. I've been disillusioned by the speed of policy change since 2014, and I've been determined that tech could meet people's needs faster than policy since 2015.</p>
+
+    <h2>Where</h2>
+    <p>I'm based in Queens, NY. Born and raised, baby!</p>
+
+    <h2>Why</h2>
+    <p>I enjoy thinking hard — it's something I took for granted back in school. I also care a lot about my fellow humans, and I want better for all of us.</p>
+    <p>I want to build things that remain in my absence, enriching the community — big or small — after I'm gone. So I build healthcare products, run projects, and make art. My business exists to help novice and amateur musicians make their first records, because that first record matters, even if there is no second.</p>
+
+    <h1 class="quote">That which can be destroyed by the truth should be.</h1>
+
+    <h2 id="work">Work</h2>
+
+    <div class="projects">
+      <article class="project">
+        <h3>Paper Record Tracking Project</h3>
+        <p>DHA has more than 8M paper records requiring tracked chain of custody. We consolidated data from disparate legacy systems, applied new governance standards, and built expanded workflows now serving 10k+ users globally.</p>
+      </article>
+      <article class="project">
+        <h3>Special Needs Program Management Information System</h3>
+        <p>Unified a fragmented DoD special needs care management system across all military branches — standardizing intake-to-discharge workflows, migrating and cleaning data, and meeting congressional reporting requirements.</p>
+      </article>
+      <article class="project">
+        <h3>Silver Lining Collective, LLC</h3>
+        <p>My personal recording studio helping novice and amateur musicians make their first records — from composition and arrangement to mixing, mastering, and promotion.</p>
+        <div class="project-links">
+          <a href="https://silverliningco.studio" target="_blank" rel="noopener">silverliningco.studio</a>
+          <a href="https://instagram.com/silverliningco.studio" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/></svg>
+          </a>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="mailto:1anp3rsaud@gmail.com">email</a>
+      <a href="https://www.linkedin.com/in/ianpersaud/" target="_blank" rel="noopener">linkedin</a>
+    </div>
+    <span>&copy; <span id="year"></span> Ian Persaud</span>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'dark') {
+      html.classList.add('dark');
+      toggle.textContent = '[☀]';
+    }
+
+    toggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      const isDark = html.classList.contains('dark');
+      toggle.textContent = isDark ? '[☀]' : '[☾]';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
