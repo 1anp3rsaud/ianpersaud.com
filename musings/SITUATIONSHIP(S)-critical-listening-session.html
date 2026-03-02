@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The EP is coming along nicely — Ian Persaud</title>
+  <meta name="description" content="Project Update Situationships — Ian Persaud">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html">[/home]</a>
+    <a href="../work.html">[/work]</a>
+    <a href="../musings.html" class="active">[/musings]</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">[&#9728;]</button>
+  </nav>
+
+  <main>
+    <a class="musing-back" href="../musings.html">← back to musings</a>
+
+    <div class="musing-header">
+      <span class="musing-date">02 March 2026, at 1:37PM EST</span>
+      <span class="musing-topic">[music]</span>
+      <h1>The EP is coming along nicely</h1>
+    </div>
+
+    <div class="musing-body">
+      <p>On Saturday, February 28, I hosted a listening session for my latest work with my collaborator, Blasé. </p>
+      <p>The goal of the session was to get critical feedback on the EP's sonics & engineering, as well as how it would land with listners. After many many hours sitting with these tracks over the course of more than a year, (and a very late night the day before) the bias is unshakeable. We had questions like: "If you were to put this song in a playlist, what would that playlist be called?" and as a follow-up, "What would be. another song you'd have in that same playlist?". This is alongside the classic questions to scope the market, such as comparing it to existing work. This surprised me, we got range from Post Malone, to Travis Scott, to Julian Casablancas, to the Weeknd. An incredible mix!</p>
+      <p>We came away with great insight into all aspects of the project, and from that viewpoint, we are able to better conceptualize the distance to the finish line. Ideas are blossoming for us, in ways we plan to build the world with additional content that expands the view; how we'll shine light on our concepts behind the project "SITUATIONSHIP(S)". </p>
+      <p>I realized I haven't defined the EP yet... The project is our commentary on the cycles in modern romance. It's going to be a short 4 track EP that takes the listener on a journey that may be relatable, as we all have some relationship with relationships.</p>
+      <p>I'm so looking forward to builidng this out, and making an incredible landing page for it on a new website. I plan to do so much that hasn't been done before to roll this out! Social media marketing alone is painful and over-saturated, and I want this market push to be personal and intimate. I don't want to reach the ears of the masses first, I want to develop a relationship with the listeners near home, and then create something they genuinely want to share with others.</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="mailto:1anp3rsaud@gmail.com">email</a>
+      <a href="https://www.linkedin.com/in/ianpersaud/" target="_blank" rel="noopener">linkedin</a>
+    </div>
+    <span>&copy; <span id="year"></span> Ian Persaud</span>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light') {
+      html.classList.remove('dark');
+      toggle.textContent = '[☾]';
+    }
+
+    toggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      const isDark = html.classList.contains('dark');
+      toggle.textContent = isDark ? '[☀]' : '[☾]';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>
