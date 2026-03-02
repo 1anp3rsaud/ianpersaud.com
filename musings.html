@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Musings — Ian Persaud</title>
+  <meta name="description" content="Musings — Ian Persaud">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">[/home]</a>
+    <a href="work.html">[/work]</a>
+    <a href="musings.html" class="active">[/musings]</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">[&#9728;]</button>
+  </nav>
+
+  <main>
+    <h2>Musings</h2>
+
+    <div class="topic-filter">
+      <button class="topic-btn active" data-filter="all">[all]</button>
+      <button class="topic-btn" data-filter="journal">[journal]</button>
+    </div>
+
+    <div class="musings-list">
+      <a class="musing-entry" href="musings/its-nice-to-meet-you.html" data-topic="journal">
+        <div class="musing-meta">
+          <span class="musing-date">02 March 2026, at 10:00</span>
+          <span class="musing-topic">[journal]</span>
+        </div>
+        <h3 class="musing-title">It's nice to meet you</h3>
+        <p class="musing-subtitle">I've been meaning to build a website for a long time. The blank canvas was intimidating, but I'm glad to finally get the brush moving.</p>
+      </a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="mailto:1anp3rsaud@gmail.com">email</a>
+      <a href="https://www.linkedin.com/in/ianpersaud/" target="_blank" rel="noopener">linkedin</a>
+    </div>
+    <span>&copy; <span id="year"></span> Ian Persaud</span>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light') {
+      html.classList.remove('dark');
+      toggle.textContent = '[☾]';
+    }
+
+    toggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      const isDark = html.classList.contains('dark');
+      toggle.textContent = isDark ? '[☀]' : '[☾]';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+
+    // Topic filter
+    const filterBtns = document.querySelectorAll('.topic-btn');
+    const entries = document.querySelectorAll('.musing-entry');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const filter = btn.dataset.filter;
+        entries.forEach(entry => {
+          entry.style.display = (filter === 'all' || entry.dataset.topic === filter) ? 'block' : 'none';
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

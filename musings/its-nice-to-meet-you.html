@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>It's nice to meet you — Ian Persaud</title>
+  <meta name="description" content="It's nice to meet you — Ian Persaud">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+
+  <nav>
+    <a href="../index.html">[/home]</a>
+    <a href="../work.html">[/work]</a>
+    <a href="../musings.html" class="active">[/musings]</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">[&#9728;]</button>
+  </nav>
+
+  <main>
+    <a class="musing-back" href="../musings.html">← back to musings</a>
+
+    <div class="musing-header">
+      <span class="musing-date">02 March 2026, at 10:00</span>
+      <span class="musing-topic">[journal]</span>
+      <h1>It's nice to meet you</h1>
+    </div>
+
+    <div class="musing-body">
+      <p>I've been meaning to build a website for a long time. The blank canvas was intimidating, but I'm glad to finally get the brush moving.</p>
+      <p>Perhaps there's something about turning 30, but I've found a deep reinvigoration of my personal ambition to learn, and execute. I had gotten so deep in my thinking and learning that I had not executed as fully, but today I am so much more focused on the doing.</p>
+      <p>The website will evolve and iterate rapidly at first, and I wonder if it will ever reach a stable format... but I'm not going to think about that just yet; I'm going to just do.</p>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="mailto:1anp3rsaud@gmail.com">email</a>
+      <a href="https://www.linkedin.com/in/ianpersaud/" target="_blank" rel="noopener">linkedin</a>
+    </div>
+    <span>&copy; <span id="year"></span> Ian Persaud</span>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light') {
+      html.classList.remove('dark');
+      toggle.textContent = '[☾]';
+    }
+
+    toggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      const isDark = html.classList.contains('dark');
+      toggle.textContent = isDark ? '[☀]' : '[☾]';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  </script>
+
+</body>
+</html>

@@ -242,3 +242,72 @@ footer {
 .footer-links a {
   margin-right: 1rem;
 }
+
+/* ── Musings filter ── */
+.topic-filter {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+.topic-btn {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.4;
+}
+.topic-btn.active, .topic-btn:hover { opacity: 1; }
+
+/* ── Musings list ── */
+.musings-list { margin-top: 1rem; }
+
+.musing-entry {
+  display: block;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--border);
+  opacity: 0.85;
+  transition: opacity 0.15s;
+}
+.musing-entry:hover { opacity: 1; }
+.musing-entry:last-child { border-bottom: 1px solid var(--border); }
+
+.musing-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.25rem;
+}
+.musing-date, .musing-topic {
+  font-size: 0.7rem;
+  opacity: 0.6;
+}
+.musing-title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--text);
+  opacity: 1;
+}
+.musing-subtitle {
+  font-size: 0.7rem;
+  opacity: 0.6;
+  margin-top: 0.2rem;
+}
+
+/* ── Individual musing page ── */
+.musing-back {
+  display: inline-block;
+  margin-bottom: 2rem;
+  opacity: 0.5;
+  font-size: 0.75rem;
+}
+.musing-back:hover { opacity: 1; }
+.musing-header { margin-bottom: 1.5rem; }
+.musing-header .musing-date { display: block; margin-bottom: 0.25rem; }
+.musing-header .musing-topic { display: block; margin-bottom: 0.25rem; }
+.musing-header h1 { margin-top: 0.25rem; }
+.musing-body p { margin-top: 1rem; opacity: 0.85; }
