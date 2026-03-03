@@ -47,7 +47,7 @@
   let progressTimer = null;
   let popupState    = 'hidden'; // 'hidden' | 'cover' | 'meta'
   let pendingAlbumId = null;
-  let pendingSeek   = null; // { time, paused }
+  let pendingSeek   = null; // { time, paused, duration }
 
   // ── DOM refs ──────────────────────────────────────────────────────────────────
   const bar           = document.getElementById('np-bar');
@@ -171,9 +171,18 @@
         onReady: function (e) {
           if (pendingAlbumId) {
             if (pendingSeek) {
-              e.target.loadVideoById({ videoId: pendingAlbumId, startSeconds: pendingSeek.time });
               if (pendingSeek.paused) {
-                setTimeout(function () { try { e.target.pauseVideo(); } catch (_) {} }, 800);
+                // cueVideoById loads at startSeconds WITHOUT autoplaying — no setTimeout needed
+                e.target.cueVideoById({ videoId: pendingAlbumId, startSeconds: pendingSeek.time });
+                // Pre-populate seek bar since updateProgress won't run until play
+                if (pendingSeek.duration) {
+                  var pct = (pendingSeek.time / pendingSeek.duration) * 100;
+                  seekFill.style.width = pct + '%';
+                  seekInput.value = pct;
+                  timeEl.textContent = formatTime(pendingSeek.time);
+                }
+              } else {
+                e.target.loadVideoById({ videoId: pendingAlbumId, startSeconds: pendingSeek.time });
               }
               pendingSeek = null;
             } else {
@@ -387,7 +396,7 @@
   if (saved && saved.active) {
     albumIdx = saved.albumIdx || 0;
     if (saved.currentTime) {
-      pendingSeek = { time: saved.currentTime, paused: !saved.playing };
+      pendingSeek = { time: saved.currentTime, paused: !saved.playing, duration: saved.duration };
     }
     activatePlayer();
   }
