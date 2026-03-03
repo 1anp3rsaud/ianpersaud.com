@@ -5,6 +5,58 @@
   const inMusings = location.pathname.includes('/musings/');
   const base = inMusings ? '../' : '';
 
+  // ── Inject bar & popup HTML ───────────────────────────────────────────────
+  document.body.insertAdjacentHTML('beforeend', `
+    <div id="np-bar" class="np-bar">
+      <div class="np-idle" id="np-idle">
+        <div class="np-container">
+          <button class="np-idle-play" id="np-idle-play" aria-label="Start music">▶</button>
+        </div>
+      </div>
+      <div class="np-active" id="np-active" hidden>
+        <div class="np-container">
+          <div class="np-left">
+            <div class="np-vinyl" id="np-vinyl-lottie"></div>
+            <div class="np-thumb-wrap" id="np-thumb-wrap">
+              <div class="np-thumb-card" id="np-thumb-card">
+                <div class="np-thumb-front"><img id="np-thumb-front-img" src="" alt=""></div>
+                <div class="np-thumb-back"><img id="np-thumb-back-img" src="" alt=""></div>
+              </div>
+            </div>
+          </div>
+          <div class="np-info" id="np-info">
+            <span class="np-track" id="np-track"></span>
+            <span class="np-album" id="np-album"></span>
+            <span class="np-artist" id="np-artist"></span>
+          </div>
+          <div class="np-seek">
+            <div class="np-seek-track"><div class="np-seek-fill" id="np-seek-fill"></div></div>
+            <input type="range" class="np-seek-input" id="np-seek-input" min="0" max="100" value="0" step="0.1">
+            <span class="np-time" id="np-time">0:00</span>
+          </div>
+          <div class="np-ctrl">
+            <button id="np-prev" aria-label="Previous album">⏮</button>
+            <button id="np-pp" aria-label="Play/Pause">▶</button>
+            <button id="np-next" aria-label="Next album">⏭</button>
+            <a id="np-now-link" href="#" hidden>now playing →</a>
+            <button id="np-close" aria-label="Close player">✕</button>
+          </div>
+        </div>
+      </div>
+      <div id="np-yt-player"></div>
+    </div>
+    <div id="np-popup" class="np-popup" hidden>
+      <img id="np-popup-img" src="" alt="">
+      <div id="np-popup-meta" hidden>
+        <p id="np-pm-track"></p>
+        <p id="np-pm-album-artist"></p>
+        <p id="np-pm-time-year"></p>
+        <p id="np-pm-emotion"></p>
+        <p id="np-pm-notes"></p>
+        <a id="np-pm-yt" href="" target="_blank" rel="noopener">↗ Stream on YouTube</a>
+      </div>
+    </div>`);
+
   const ALBUMS = [
     {
       track:   'Old Pasadena',
@@ -49,7 +101,7 @@
   let pendingAlbumId = null;
   let pendingSeek   = null; // { time, paused, duration }
 
-  // ── DOM refs ──────────────────────────────────────────────────────────────────
+  // ── DOM refs ──────────────────────────────────────────────────────────────
   const bar           = document.getElementById('np-bar');
   const idleSection   = document.getElementById('np-idle');
   const activeSection = document.getElementById('np-active');
@@ -81,11 +133,11 @@
   const pmYt          = document.getElementById('np-pm-yt');
   const lottieWrap    = document.getElementById('np-vinyl-lottie');
 
-  // ── Session state ─────────────────────────────────────────────────────────────
+  // ── Session state ─────────────────────────────────────────────────────────
   const STATE_KEY = 'vp_state';
 
   function saveState() {
-    if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') return;
+    if (!isYtReady('getPlayerState')) return;
     try {
       sessionStorage.setItem(STATE_KEY, JSON.stringify({
         active:      true,
@@ -108,12 +160,16 @@
     sessionStorage.removeItem(STATE_KEY);
   }
 
-  // ── Helpers ───────────────────────────────────────────────────────────────────
+  // ── Helpers ───────────────────────────────────────────────────────────────
+  function isYtReady(method) {
+    return ytPlayer && typeof ytPlayer[method] === 'function';
+  }
+
   function formatTime(secs) {
     if (!secs || isNaN(secs)) return '0:00';
     const m = Math.floor(secs / 60);
     const s = Math.floor(secs % 60);
-    return m + ':' + (s < 10 ? '0' + s : s);
+    return m + ':' + String(s).padStart(2, '0');
   }
 
   function updateMeta(idx) {
@@ -134,7 +190,7 @@
     popupImg.alt              = a.album;
   }
 
-  // ── Lottie ────────────────────────────────────────────────────────────────────
+  // ── Lottie ────────────────────────────────────────────────────────────────
   function ensureLottie(cb) {
     if (window.lottie) { cb(); return; }
     const s = document.createElement('script');
@@ -154,7 +210,7 @@
     });
   }
 
-  // ── YouTube IFrame API ────────────────────────────────────────────────────────
+  // ── YouTube IFrame API ────────────────────────────────────────────────────
   function ensureYT() {
     if (window.YT && window.YT.Player) return;
     const s = document.createElement('script');
@@ -172,11 +228,11 @@
           if (pendingAlbumId) {
             if (pendingSeek) {
               if (pendingSeek.paused) {
-                // cueVideoById loads at startSeconds WITHOUT autoplaying — no setTimeout needed
+                // cueVideoById loads at startSeconds WITHOUT autoplaying
                 e.target.cueVideoById({ videoId: pendingAlbumId, startSeconds: pendingSeek.time });
                 // Pre-populate seek bar since updateProgress won't run until play
                 if (pendingSeek.duration) {
-                  var pct = (pendingSeek.time / pendingSeek.duration) * 100;
+                  const pct = (pendingSeek.time / pendingSeek.duration) * 100;
                   seekFill.style.width = pct + '%';
                   seekInput.value = pct;
                   timeEl.textContent = formatTime(pendingSeek.time);
@@ -194,15 +250,18 @@
         onStateChange: function (e) {
           if (e.data === YT.PlayerState.PLAYING) {
             ppBtn.textContent = '⏸';
+            bar.classList.add('is-playing');
             if (barLottie) barLottie.play();
             startProgress();
           } else if (e.data === YT.PlayerState.PAUSED) {
             ppBtn.textContent = '▶';
+            bar.classList.remove('is-playing');
             if (barLottie) barLottie.pause();
             stopProgress();
             saveState();
           } else if (e.data === YT.PlayerState.ENDED) {
             ppBtn.textContent = '▶';
+            bar.classList.remove('is-playing');
             if (barLottie) barLottie.pause();
             stopProgress();
             autoAdvance();
@@ -212,7 +271,7 @@
     });
   };
 
-  // ── Progress ──────────────────────────────────────────────────────────────────
+  // ── Progress ──────────────────────────────────────────────────────────────
   function startProgress() {
     if (progressTimer) return;
     progressTimer = setInterval(updateProgress, 500);
@@ -223,7 +282,7 @@
   }
 
   function updateProgress() {
-    if (!ytPlayer || typeof ytPlayer.getCurrentTime !== 'function') return;
+    if (!isYtReady('getCurrentTime')) return;
     try {
       const cur = ytPlayer.getCurrentTime();
       const dur = ytPlayer.getDuration();
@@ -232,11 +291,10 @@
       seekFill.style.width = pct + '%';
       seekInput.value      = pct;
       timeEl.textContent   = formatTime(cur);
-      saveState();
     } catch (_) {}
   }
 
-  // ── Flip to album ─────────────────────────────────────────────────────────────
+  // ── Flip to album ─────────────────────────────────────────────────────────
   function flipToAlbum(idx) {
     thumbBackImg.src = ALBUMS[idx].cover;
     thumbBackImg.alt = ALBUMS[idx].album;
@@ -252,6 +310,7 @@
       albumIdx = idx;
       updateMeta(idx);
       if (ytPlayer) { try { ytPlayer.loadVideoById(ALBUMS[idx].ytId); } catch (_) {} }
+      saveState();
     }, { once: true });
   }
 
@@ -259,13 +318,13 @@
     flipToAlbum((albumIdx + 1) % ALBUMS.length);
   }
 
-  // ── Activate ──────────────────────────────────────────────────────────────────
+  // ── Activate ──────────────────────────────────────────────────────────────
   function activatePlayer() {
     idleSection.hidden   = true;
     activeSection.hidden = false;
     document.body.classList.add('has-np-bar');
     nowLink.href = base + 'now-playing.html';
-    nowLink.removeAttribute('hidden');
+    nowLink.hidden = false;
     updateMeta(albumIdx);
     ensureLottie(function () {
       initBarLottie();
@@ -274,12 +333,13 @@
     });
   }
 
-  // ── Close ─────────────────────────────────────────────────────────────────────
+  // ── Close ─────────────────────────────────────────────────────────────────
   function closePlayer() {
     if (ytPlayer) { try { ytPlayer.stopVideo(); } catch (_) {} }
+    bar.classList.remove('is-playing');
     if (barLottie) barLottie.pause();
     stopProgress();
-    hidePopup();
+    setPopupState('hidden');
     bar.classList.add('is-retracting');
     setTimeout(function () {
       bar.classList.remove('is-retracting');
@@ -297,41 +357,35 @@
     }, 1000);
   }
 
-  // ── Popup ─────────────────────────────────────────────────────────────────────
+  // ── Popup ─────────────────────────────────────────────────────────────────
   function positionPopup() {
-    const barH      = bar.offsetHeight;
-    const thumbRect = thumbWrap.getBoundingClientRect();
-    popup.style.bottom = barH + 'px';
-    popup.style.left   = thumbRect.left + 'px';
+    popup.style.bottom = bar.offsetHeight + 'px';
+    popup.style.left   = thumbWrap.getBoundingClientRect().left + 'px';
   }
 
-  function showCoverPopup() {
-    positionPopup();
-    popupMeta.setAttribute('hidden', '');
-    popup.removeAttribute('hidden');
-    popupState = 'cover';
+  function setPopupState(state) {
+    if (state === 'cover') {
+      positionPopup();
+      popupMeta.hidden = true;
+      popup.hidden = false;
+    } else if (state === 'meta') {
+      positionPopup();
+      popupMeta.hidden = false;
+      popup.hidden = false;
+      infoEl.classList.add('is-hidden');
+    } else {
+      popup.hidden = true;
+      infoEl.classList.remove('is-hidden');
+      popupMeta.hidden = true;
+    }
+    popupState = state;
   }
 
-  function showMetaPopup() {
-    positionPopup();
-    popupMeta.removeAttribute('hidden');
-    popup.removeAttribute('hidden');
-    infoEl.classList.add('is-hidden');
-    popupState = 'meta';
-  }
-
-  function hidePopup() {
-    popup.setAttribute('hidden', '');
-    infoEl.classList.remove('is-hidden');
-    popupMeta.setAttribute('hidden', '');
-    popupState = 'hidden';
-  }
-
-  // ── Event listeners ───────────────────────────────────────────────────────────
+  // ── Event listeners ───────────────────────────────────────────────────────
   idlePlayBtn.addEventListener('click', activatePlayer);
 
   ppBtn.addEventListener('click', function () {
-    if (!ytPlayer || typeof ytPlayer.getPlayerState !== 'function') return;
+    if (!isYtReady('getPlayerState')) return;
     try {
       if (ytPlayer.getPlayerState() === 1) ytPlayer.pauseVideo();
       else ytPlayer.playVideo();
@@ -349,7 +403,7 @@
   closeBtn.addEventListener('click', closePlayer);
 
   seekInput.addEventListener('input', function () {
-    if (!ytPlayer || typeof ytPlayer.getDuration !== 'function') return;
+    if (!isYtReady('getDuration')) return;
     try {
       const dur = ytPlayer.getDuration();
       if (dur) {
@@ -360,38 +414,38 @@
   });
 
   thumbWrap.addEventListener('mouseenter', function () {
-    if (popupState === 'hidden') showCoverPopup();
+    if (popupState === 'hidden') setPopupState('cover');
   });
 
   thumbWrap.addEventListener('mouseleave', function (e) {
-    if (popupState === 'cover' && !popup.contains(e.relatedTarget)) hidePopup();
+    if (popupState === 'cover' && !popup.contains(e.relatedTarget)) setPopupState('hidden');
   });
 
   thumbWrap.addEventListener('click', function (e) {
     e.stopPropagation();
-    if (popupState === 'meta') hidePopup();
-    else showMetaPopup();
+    if (popupState === 'meta') setPopupState('hidden');
+    else setPopupState('meta');
   });
 
   popup.addEventListener('mouseleave', function (e) {
-    if (popupState === 'cover' && !thumbWrap.contains(e.relatedTarget)) hidePopup();
+    if (popupState === 'cover' && !thumbWrap.contains(e.relatedTarget)) setPopupState('hidden');
   });
 
   popupImg.addEventListener('click', function (e) {
     e.stopPropagation();
-    if (popupState === 'meta') hidePopup();
-    else showMetaPopup();
+    if (popupState === 'meta') setPopupState('hidden');
+    else setPopupState('meta');
   });
 
   document.addEventListener('click', function (e) {
     if (popupState !== 'hidden' && !popup.contains(e.target) && !thumbWrap.contains(e.target)) {
-      hidePopup();
+      setPopupState('hidden');
     }
   });
 
   window.addEventListener('beforeunload', saveState);
 
-  // ── Restore session on page load ──────────────────────────────────────────────
+  // ── Restore session on page load ──────────────────────────────────────────
   const saved = loadState();
   if (saved && saved.active) {
     albumIdx = saved.albumIdx || 0;
