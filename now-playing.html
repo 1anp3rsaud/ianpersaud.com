@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Now Playing — Ian Persaud</title>
+  <meta name="description" content="Now Playing — Ian Persaud">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">[/home]</a>
+    <a href="work.html">[/work]</a>
+    <a href="musings.html">[/musings]</a>
+    <a href="timeline.html">[/timeline]</a>
+    <a href="now-playing.html" class="active">[/now playing]</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">[&#9728;]</button>
+  </nav>
+
+  <main>
+    <h2>Now Playing</h2>
+    <p>I'm featuring individual songs on this website, but as a listener, I consume albums top to bottom, left to right. I'd encourage you to listen to these albums from the beginning for the full experience.</p>
+    <p style="color: var(--muted)"><em>Last updated: March 2026</em></p>
+
+    <div style="margin-top: 2rem;">
+
+      <div class="np-page-entry">
+        <img class="np-page-cover" src="assets/img/COVER ART_Wyoming (Piano Works) - Elijah Fox.jpg" alt="Wyoming (Piano Works)">
+        <div class="np-page-meta">
+          <div class="np-page-row"><span class="np-page-label">album</span><span class="np-page-album">Wyoming (Piano Works)</span></div>
+          <div class="np-page-row"><span class="np-page-label">track</span><span class="np-page-track">Old Pasadena</span></div>
+          <span class="np-page-detail">Elijah Fox · 1:40 · March 2025</span>
+          <span class="np-page-emotion">Serenity, yet deep. I am reminded that as a person, my complexity is a blessing and a curse, but it is beautiful nonetheless.</span>
+          <p class="np-page-notes">The chord progressions in this song stir a movement deep in my soul. When I heard this song for the first time, I was reminded that when you truly connect with a song, it is something you can deeply feel in your body. The light melody sets a stage for you, and then this compelling chord progression rises up, bringing your energy with it. This track seamlessly flows into the next track "Alamosa, CO" in a beautiful way, bring a more somber charge. A masterclass in how a composition can flow.</p>
+          <p class="np-page-notes">this album shifts and changes, ebbs and flows. It's the perfect length at just around an hour, so you can use music as your timekeeper.</p>
+          <a class="np-page-yt" href="https://www.youtube.com/watch?v=j66SXs8vdcM" target="_blank" rel="noopener">↗ Stream on YouTube</a>
+        </div>
+      </div>
+
+      <div class="np-page-entry">
+        <img class="np-page-cover" src="assets/img/COVER ART_Always in a Hurry - Medasin.jpg" alt="Always in a Hurry">
+        <div class="np-page-meta">
+          <div class="np-page-row"><span class="np-page-label">album</span><span class="np-page-album">Always in a Hurry</span></div>
+          <div class="np-page-row"><span class="np-page-label">track</span><span class="np-page-track">Always in a Hurry</span></div>
+          <span class="np-page-detail">Medasin · 2:35 · April 2023</span>
+          <span class="np-page-emotion">Joy, A forward lean into life. Like the bullet train is moving fast, but I can sit back as a passenger and enjoy the speed.</span>
+          <p class="np-page-notes">The drums are grass fed all natural in this track, those live drums sound sonically lush, and they always bring an incredible groove. The rising energy and the suspense makes me lean into absorb in full HD the moment I'm experiencing as this plays in my headphones. Then I am launched into action, into progression, with a twinge of joy and gratitude that the moment, the journey, the pursuit could be blessed with such a soundtrack.</p>
+          <p class="np-page-notes">This album speaks to progression, it breathes and you can feel the waves of emotion rolling off the wavefom. Constant Motion</p>
+          <a class="np-page-yt" href="https://www.youtube.com/watch?v=j66SXs8vdcM" target="_blank" rel="noopener">↗ Stream on YouTube</a>
+        </div>
+      </div>
+
+      <div class="np-page-entry">
+        <img class="np-page-cover" src="assets/img/COVER ART_ Casino - Baby Keem .png" alt="Ca$ino">
+        <div class="np-page-meta">
+          <div class="np-page-row"><span class="np-page-label">album</span><span class="np-page-album">Ca$ino</span></div>
+          <div class="np-page-row"><span class="np-page-label">track</span><span class="np-page-track">Ca$ino</span></div>
+          <span class="np-page-detail">Baby Keem · 4:20 · February 2026</span>
+          <span class="np-page-emotion">Confidence, grit, feelings of power that I am capable of hard work, and that my hard work is something I can stand on.</span>
+          <p class="np-page-notes">The song starts with a synth that has edge, like a warning siren that you're about to go into overdrive. The groove of the drums urges movement and Keem's flow encourages you to float around as you move around the world with it playing. The beat switch introduces a little light absurdity while Keem sings his praises. His confidence is contagious.</p>
+          <p class="np-page-notes">On this album Keem is flexible, refreshing, and he shows his story and tells it in the right amounts. There's some vulnerable, there's some strength. A future classic rap album.</p>
+          <a class="np-page-yt" href="https://www.youtube.com/watch?v=j66SXs8vdcM" target="_blank" rel="noopener">↗ Stream on YouTube</a>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="mailto:1anp3rsaud@gmail.com">email</a>
+      <a href="https://www.linkedin.com/in/ianpersaud/" target="_blank" rel="noopener">linkedin</a>
+    </div>
+    <span>&copy; <span id="year"></span> Ian Persaud</span>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const toggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+
+    if (localStorage.getItem('theme') === 'light') {
+      html.classList.remove('dark');
+      toggle.textContent = '[☾]';
+    }
+
+    toggle.addEventListener('click', () => {
+      html.classList.toggle('dark');
+      const isDark = html.classList.contains('dark');
+      toggle.textContent = isDark ? '[☀]' : '[☾]';
+      localStorage.setItem('theme', isDark ? 'dark' : 'light');
+    });
+  </script>
+
+  <!-- NOW PLAYING bar -->
+  <div id="np-bar" class="np-bar">
+    <div class="np-idle" id="np-idle">
+      <div class="np-container">
+        <button class="np-idle-play" id="np-idle-play" aria-label="Start music">▶</button>
+      </div>
+    </div>
+    <div class="np-active" id="np-active" hidden>
+      <div class="np-container">
+        <div class="np-left">
+          <div class="np-vinyl" id="np-vinyl-lottie"></div>
+          <div class="np-thumb-wrap" id="np-thumb-wrap">
+            <div class="np-thumb-card" id="np-thumb-card">
+              <div class="np-thumb-front"><img id="np-thumb-front-img" src="" alt=""></div>
+              <div class="np-thumb-back"><img id="np-thumb-back-img" src="" alt=""></div>
+            </div>
+          </div>
+        </div>
+        <div class="np-info" id="np-info">
+          <span class="np-track" id="np-track"></span>
+          <span class="np-album" id="np-album"></span>
+          <span class="np-artist" id="np-artist"></span>
+        </div>
+        <div class="np-seek">
+          <div class="np-seek-track"><div class="np-seek-fill" id="np-seek-fill"></div></div>
+          <input type="range" class="np-seek-input" id="np-seek-input" min="0" max="100" value="0" step="0.1">
+          <span class="np-time" id="np-time">0:00</span>
+        </div>
+        <div class="np-ctrl">
+          <button id="np-prev" aria-label="Previous album">⏮</button>
+          <button id="np-pp" aria-label="Play/Pause">▶</button>
+          <button id="np-next" aria-label="Next album">⏭</button>
+          <a id="np-now-link" href="#" hidden>now playing →</a>
+          <button id="np-close" aria-label="Close player">✕</button>
+        </div>
+      </div>
+    </div>
+    <div id="np-yt-player"></div>
+  </div>
+
+  <!-- Cover popup -->
+  <div id="np-popup" class="np-popup" hidden>
+    <img id="np-popup-img" src="" alt="">
+    <div id="np-popup-meta" hidden>
+      <p id="np-pm-track"></p>
+      <p id="np-pm-album-artist"></p>
+      <p id="np-pm-time-year"></p>
+      <p id="np-pm-emotion"></p>
+      <p id="np-pm-notes"></p>
+      <a id="np-pm-yt" href="" target="_blank" rel="noopener">↗ Stream on YouTube</a>
+    </div>
+  </div>
+
+  <script src="assets/js/player-bar.js"></script>
+
+</body>
+</html>

@@ -13,24 +13,24 @@
     <a href="#" class="active">[/home]</a>
     <a href="work.html">[/work]</a>
     <a href="musings.html">[/musings]</a>
+    <a href="timeline.html">[/timeline]</a>
+    <a href="now-playing.html">[/now playing]</a>
     <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">[&#9728;]</button>
   </nav>
 
   <main>
-    <h1>Ian Persaud</h1>
-    <p>I'm a manager of products, programs, and projects in the tech space with a preference for solving hard problems in healthcare. I'm also a business owner, an artist/musician, a writer, and a big reader.</p>
-
-    <h2>When</h2>
-    <p>I've been a product &amp; project manager since 2021, I've been writing music since 2015, and I've been worried about healthcare since 2010. I've been disillusioned by the speed of policy change since 2014, and I've been determined that tech could meet people's needs faster than policy since 2015.</p>
-
-    <h2>Where</h2>
-    <p>I'm based in Queens, NY. Born and raised, baby!</p>
-
-    <h2>Why</h2>
-    <p>I enjoy thinking hard — it's something I took for granted back in school. I also care a lot about my fellow humans, and I want better for all of us.</p>
-    <p>I want to build things that remain in my absence, enriching the community — big or small — after I'm gone. So I build healthcare products, run projects, and make art. My business exists to help novice and amateur musicians make their first records, because that first record matters, even if there is no second.</p>
-
-    <h1 class="quote">That which can be destroyed by the truth should be.</h1>
+    <div class="hero">
+      <div class="headshot-wrap">
+        <img class="headshot" src="assets/img/potfolioheadshot_feb2026.jpg" alt="Ian Persaud">
+      </div>
+      <div>
+        <h1 class="hero-name">Ian Persaud</h1>
+        <p style="color: var(--muted)"><em>born, raised, &amp; based in Queens NY</em></p>
+        <p>I'm a manager of products, programs, and projects in the tech space with a predilection for solving hard problems and building complex things; I love it the most when these two processes are intertwined.</p>
+        <p style="margin-top:1.5em;">There is art in balancing the simple with the complex, the minimal with the maximal, the rough with the refined.</p>
+        <p style="margin-top:1.5em;">I feel most beautiful when I have big ideas and I take a step down the long runway, and I feel most grateful when I have the opportunity to share the ideas and the journey to their fruition.</p>
+      </div>
+    </div>
 
     <hr class="section-divider">
 
@@ -75,6 +75,61 @@
     <span>&copy; <span id="year"></span> Ian Persaud</span>
   </footer>
 
+  <!-- NOW PLAYING bar -->
+  <div id="np-bar" class="np-bar">
+    <div class="np-idle" id="np-idle">
+      <div class="np-container">
+        <button class="np-idle-play" id="np-idle-play" aria-label="Start music">▶</button>
+      </div>
+    </div>
+    <div class="np-active" id="np-active" hidden>
+      <div class="np-container">
+        <div class="np-left">
+          <div class="np-vinyl" id="np-vinyl-lottie"></div>
+          <div class="np-thumb-wrap" id="np-thumb-wrap">
+            <div class="np-thumb-card" id="np-thumb-card">
+              <div class="np-thumb-front"><img id="np-thumb-front-img" src="" alt=""></div>
+              <div class="np-thumb-back"><img id="np-thumb-back-img" src="" alt=""></div>
+            </div>
+          </div>
+        </div>
+        <div class="np-info" id="np-info">
+          <span class="np-track" id="np-track"></span>
+          <span class="np-album" id="np-album"></span>
+          <span class="np-artist" id="np-artist"></span>
+        </div>
+        <div class="np-seek">
+          <div class="np-seek-track"><div class="np-seek-fill" id="np-seek-fill"></div></div>
+          <input type="range" class="np-seek-input" id="np-seek-input" min="0" max="100" value="0" step="0.1">
+          <span class="np-time" id="np-time">0:00</span>
+        </div>
+        <div class="np-ctrl">
+          <button id="np-prev" aria-label="Previous album">⏮</button>
+          <button id="np-pp" aria-label="Play/Pause">▶</button>
+          <button id="np-next" aria-label="Next album">⏭</button>
+          <a id="np-now-link" href="#" hidden>now playing →</a>
+          <button id="np-close" aria-label="Close player">✕</button>
+        </div>
+      </div>
+    </div>
+    <div id="np-yt-player"></div>
+  </div>
+
+  <!-- Cover popup -->
+  <div id="np-popup" class="np-popup" hidden>
+    <img id="np-popup-img" src="" alt="">
+    <div id="np-popup-meta" hidden>
+      <p id="np-pm-track"></p>
+      <p id="np-pm-album-artist"></p>
+      <p id="np-pm-time-year"></p>
+      <p id="np-pm-emotion"></p>
+      <p id="np-pm-notes"></p>
+      <a id="np-pm-yt" href="" target="_blank" rel="noopener">↗ Stream on YouTube</a>
+    </div>
+  </div>
+
+  <script src="assets/js/player-bar.js"></script>
+
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -93,7 +148,8 @@
       toggle.textContent = isDark ? '[☀]' : '[☾]';
       localStorage.setItem('theme', isDark ? 'dark' : 'light');
     });
-  </script>
+
+</script>
 
 </body>
 </html>
