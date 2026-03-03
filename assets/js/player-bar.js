@@ -23,7 +23,7 @@
       artist:  'Medasin',
       duration:'2:35',
       year:    'April 2023',
-      ytId:    'j66SXs8vdcM',
+      ytId:    'bxRMtZGDbZE',
       cover:   base + 'assets/img/COVER ART_Always in a Hurry - Medasin.jpg',
       emotion: 'Joy, A forward lean into life. Like the bullet train is moving fast, but I can sit back as a passenger and enjoy the speed.',
       notes:   "The drums are grass fed all natural in this track, those live drums sound sonically lush, and they always bring an incredible groove. The rising energy and the suspense makes me lean into absorb in full HD the moment I'm experiencing as this plays in my headphones. Then I am launched into action, into progression, with a twinge of joy and gratitude that the moment, the journey, the pursuit could be blessed with such a soundtrack."
@@ -34,7 +34,7 @@
       artist:  'Baby Keem',
       duration:'4:20',
       year:    'February 2026',
-      ytId:    'j66SXs8vdcM',
+      ytId:    'osdQCYqZHkY',
       cover:   base + 'assets/img/COVER ART_ Casino - Baby Keem .png',
       emotion: 'Confidence, grit, feelings of power that I am capable of hard work, and that my hard work is something I can stand on.',
       notes:   "The song starts with a synth that has edge, like a warning siren that you're about to go into overdrive. The groove of the drums urges movement and Keem's flow encourages you to float around as you move around the world with it playing. The beat switch introduces a little light absurdity while Keem sings his praises. His confidence is contagious."
@@ -170,15 +170,16 @@
       events: {
         onReady: function (e) {
           if (pendingAlbumId) {
-            e.target.loadVideoById(pendingAlbumId);
             if (pendingSeek) {
-              const seek = pendingSeek;
+              e.target.loadVideoById({ videoId: pendingAlbumId, startSeconds: pendingSeek.time });
+              if (pendingSeek.paused) {
+                setTimeout(function () { try { e.target.pauseVideo(); } catch (_) {} }, 800);
+              }
               pendingSeek = null;
-              setTimeout(function () {
-                try { e.target.seekTo(seek.time, true); } catch (_) {}
-                if (seek.paused) { try { e.target.pauseVideo(); } catch (_) {} }
-              }, 1500);
+            } else {
+              e.target.loadVideoById(pendingAlbumId);
             }
+            pendingAlbumId = null;
           }
         },
         onStateChange: function (e) {
@@ -222,6 +223,7 @@
       seekFill.style.width = pct + '%';
       seekInput.value      = pct;
       timeEl.textContent   = formatTime(cur);
+      saveState();
     } catch (_) {}
   }
 
