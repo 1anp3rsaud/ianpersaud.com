@@ -12,54 +12,76 @@
   <nav>
     <a href="index.html">[/home]</a>
     <a href="now-playing.html">[/now playing]</a>
-    <a href="work.html">[/work]</a>
+    <a href="experience.html">[/experience]</a>
     <a href="musings.html" class="active">[/musings]</a>
+    <a href="travels.html">[/travels]</a>
     <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">[&#9728;]</button>
   </nav>
   <p class="site-id">Ian Persaud</p>
 
   <main>
-    <h2>Musings</h2>
-
-    <div class="topic-filter">
-      <button class="topic-btn active" data-filter="all">[all]</button>
-      <button class="topic-btn" data-filter="journal">[journal]</button>
-      <button class="topic-btn" data-filter="music">[music]</button>
+    <div class="musings-titlebar">
+      <span class="musings-page-title">Musings</span>
+      <button class="tl-btn" id="musings-tl-toggle">[timeline]</button>
     </div>
 
-    <div class="musings-list">
-      <a class="musing-entry" href="musings/SITUATIONSHIP(S)-ep-release.html" data-topic="music">
-        <div class="musing-meta">
-          <span class="musing-date">02 March 2026, at 12:00PM EST</span>
-          <a class="musing-topic" href="?topic=music" onclick="event.stopPropagation()">[music]</a>
+    <div id="musings-list-view">
+      <div class="topic-filter">
+        <button class="topic-btn" data-filter="all">[all]</button>
+        <button class="topic-btn active" data-filter="journal">[journal]</button>
+        <button class="topic-btn active" data-filter="music">[music]</button>
+      </div>
+
+      <div class="musings-list">
+        <a class="musing-entry" href="musings/SITUATIONSHIP(S)-ep-release.html" data-topic="music">
+          <div class="musing-meta">
+            <span class="musing-date">02 March 2026, at 12:00PM EST</span>
+            <span class="musing-topic">[music]</span>
+          </div>
+          <h3 class="musing-title">SITUATIONSHIP(S) EP</h3>
+          <p class="musing-subtitle">This 4 track EP, is mine and my collaborator's "hot take" on the cycles we experience within modern romance.</p>
+        </a>
+        <a class="musing-entry" href="musings/my-room-is-a-mess-ep.html" data-topic="music">
+          <div class="musing-meta">
+            <span class="musing-date">02 March 2026, at 9:03PM EST</span>
+            <span class="musing-topic">[music]</span>
+          </div>
+          <h3 class="musing-title">My Room Is a Mess EP</h3>
+          <p class="musing-subtitle">I spent 1 week in the autumn at Stone Mountain Farms for my birthday, alone in a cabin with no wifi.</p>
+        </a>
+        <a class="musing-entry" href="musings/SITUATIONSHIP(S)-critical-listening-session.html" data-topic="music">
+          <div class="musing-meta">
+            <span class="musing-date">02 March 2026, at 1:37PM EST</span>
+            <span class="musing-topic">[music]</span>
+          </div>
+          <h3 class="musing-title">The EP is coming along nicely</h3>
+          <p class="musing-subtitle">On Saturday, February 28, I hosted a listening session for my latest work with my collaborator, Blasé.</p>
+        </a>
+        <a class="musing-entry" href="musings/its-nice-to-meet-you.html" data-topic="journal">
+          <div class="musing-meta">
+            <span class="musing-date">02 March 2026, at 10:01AM EST</span>
+            <span class="musing-topic">[journal]</span>
+          </div>
+          <h3 class="musing-title">It's nice to meet you</h3>
+          <p class="musing-subtitle">I've been meaning to build a website for a long time. The blank canvas was intimidating, but I'm glad to finally get the brush moving.</p>
+        </a>
+      </div>
+    </div>
+
+    <div id="musings-tl-view" class="musings-tl-view" hidden>
+      <div class="timeline-wrap">
+        <div class="tl-controls">
+          <button class="tl-btn" id="tl-btn-start">← oldest</button>
+          <button class="tl-btn" id="tl-btn-auto">▶ auto-scroll</button>
+          <button class="tl-btn" id="tl-btn-end">newest →</button>
         </div>
-        <h3 class="musing-title">SITUATIONSHIP(S) EP</h3>
-        <p class="musing-subtitle">This 4 track EP, is mine and my collaborator's "hot take" on the cycles we experience within modern romance.</p>
-      </a>
-      <a class="musing-entry" href="musings/my-room-is-a-mess-ep.html" data-topic="music">
-        <div class="musing-meta">
-          <span class="musing-date">02 March 2026, at 9:03PM EST</span>
-          <a class="musing-topic" href="?topic=music" onclick="event.stopPropagation()">[music]</a>
+        <div class="timeline" id="timeline-scroll">
+          <div class="timeline-track" id="tl-track"></div>
         </div>
-        <h3 class="musing-title">My Room Is a Mess EP</h3>
-        <p class="musing-subtitle">I spent 1 week in the autumn at Stone Mountain Farms for my birthday, alone in a cabin with no wifi.</p>
-      </a>
-      <a class="musing-entry" href="musings/SITUATIONSHIP(S)-critical-listening-session.html" data-topic="music">
-        <div class="musing-meta">
-          <span class="musing-date">02 March 2026, at 1:37PM EST</span>
-          <a class="musing-topic" href="?topic=music" onclick="event.stopPropagation()">[music]</a>
-        </div>
-        <h3 class="musing-title">The EP is coming along nicely</h3>
-        <p class="musing-subtitle">On Saturday, February 28, I hosted a listening session for my latest work with my collaborator, Blasé.</p>
-      </a>
-      <a class="musing-entry" href="musings/its-nice-to-meet-you.html" data-topic="journal">
-        <div class="musing-meta">
-          <span class="musing-date">02 March 2026, at 10:01AM EST</span>
-          <a class="musing-topic" href="?topic=journal" onclick="event.stopPropagation()">[journal]</a>
-        </div>
-        <h3 class="musing-title">It's nice to meet you</h3>
-        <p class="musing-subtitle">I've been meaning to build a website for a long time. The blank canvas was intimidating, but I'm glad to finally get the brush moving.</p>
-      </a>
+      </div>
+      <div class="tl-reading-pane" id="tl-reading-pane">
+        <p class="rp-placeholder">← select an entry to read</p>
+      </div>
     </div>
   </main>
 
@@ -73,24 +95,248 @@
 
   <script src="assets/js/site.js"></script>
   <script>
-    // Topic filter
-    const filterBtns = document.querySelectorAll('.topic-btn');
-    const entries = document.querySelectorAll('.musing-entry');
+    // ── Topic filter — multi-select toggle ────────────────────────────────────
+    const topicBtns = document.querySelectorAll('.topic-btn[data-filter]:not([data-filter="all"])');
+    const allBtn    = document.querySelector('.topic-btn[data-filter="all"]');
+    const entries   = document.querySelectorAll('.musing-entry');
 
-    function applyFilter(filter) {
-      filterBtns.forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
-      entries.forEach(entry => {
-        entry.style.display = (filter === 'all' || entry.dataset.topic === filter) ? 'block' : 'none';
+    function applyFilter() {
+      const active = new Set([...topicBtns].filter(b => b.classList.contains('active')).map(b => b.dataset.filter));
+      entries.forEach(function(entry) {
+        var show = active.size === 0 || active.has(entry.dataset.topic);
+        entry.classList.toggle('is-hidden', !show);
       });
     }
 
-    filterBtns.forEach(btn => {
-      btn.addEventListener('click', () => applyFilter(btn.dataset.filter));
+    topicBtns.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        this.classList.toggle('active');
+        applyFilter();
+      });
+    });
+
+    allBtn.addEventListener('click', function() {
+      topicBtns.forEach(b => b.classList.add('active'));
+      applyFilter();
     });
 
     // Apply filter from URL param (e.g. ?topic=music)
     const initTopic = new URLSearchParams(location.search).get('topic');
-    if (initTopic) applyFilter(initTopic);
+    if (initTopic) {
+      topicBtns.forEach(b => b.classList.toggle('active', b.dataset.filter === initTopic));
+      applyFilter();
+    }
+
+    // ── Musings timeline ──────────────────────────────────────────────────────
+
+    // Collect musing data from DOM at load time
+    const MUSING_DATA = (function() {
+      const MONTHS = {January:0,February:1,March:2,April:3,May:4,June:5,
+                      July:6,August:7,September:8,October:9,November:10,December:11};
+      function parseDate(str) {
+        const m = str.match(/(\d+)\s+(\w+)\s+(\d{4}),\s+at\s+(\d+):(\d+)\s*(AM|PM)/i);
+        if (!m) return new Date(0);
+        let [, day, mon, yr, hr, min, ap] = m;
+        let h = parseInt(hr);
+        if (ap.toUpperCase() === 'PM' && h < 12) h += 12;
+        if (ap.toUpperCase() === 'AM' && h === 12) h = 0;
+        return new Date(parseInt(yr), MONTHS[mon], parseInt(day), h, parseInt(min));
+      }
+      return [...document.querySelectorAll('.musing-entry')].map(function(el) {
+        return {
+          href:     el.href,                                          // absolute URL
+          title:    el.querySelector('.musing-title').textContent.trim(),
+          subtitle: el.querySelector('.musing-subtitle').textContent.trim(),
+          dateStr:  el.querySelector('.musing-date').textContent.trim(),
+          topic:    el.dataset.topic,
+          date:     parseDate(el.querySelector('.musing-date').textContent.trim())
+        };
+      }).sort(function(a, b) { return a.date - b.date; });
+    }());
+
+    // Auto-scroll state
+    var autoScrollRaf = null;
+    var autoScrolling = false;
+
+    function stopAutoScroll() {
+      autoScrolling = false;
+      var btn = document.getElementById('tl-btn-auto');
+      if (btn) btn.textContent = '▶ auto-scroll';
+      if (autoScrollRaf) { cancelAnimationFrame(autoScrollRaf); autoScrollRaf = null; }
+    }
+
+    function startAutoScroll() {
+      autoScrolling = true;
+      document.getElementById('tl-btn-auto').textContent = '■ stop';
+      var scroll = document.getElementById('timeline-scroll');
+      function step() {
+        if (!autoScrolling) return;
+        scroll.scrollLeft += 1;
+        if (scroll.scrollLeft >= scroll.scrollWidth - scroll.clientWidth) {
+          stopAutoScroll();
+          return;
+        }
+        autoScrollRaf = requestAnimationFrame(step);
+      }
+      autoScrollRaf = requestAnimationFrame(step);
+    }
+
+    function setupScrollControls() {
+      var scroll = document.getElementById('timeline-scroll');
+      document.getElementById('tl-btn-start').addEventListener('click', function() {
+        stopAutoScroll();
+        scroll.scrollTo({ left: 0, behavior: 'smooth' });
+      });
+      document.getElementById('tl-btn-end').addEventListener('click', function() {
+        stopAutoScroll();
+        scroll.scrollTo({ left: scroll.scrollWidth, behavior: 'smooth' });
+      });
+      document.getElementById('tl-btn-auto').addEventListener('click', function() {
+        if (autoScrolling) { stopAutoScroll(); } else { startAutoScroll(); }
+      });
+    }
+
+    // Active node tracking
+    var activeNode = null;
+
+    async function onNodeClick(el, entry) {
+      var pane = document.getElementById('tl-reading-pane');
+      // Toggle off if same node clicked again
+      if (activeNode === el) {
+        el.classList.remove('tl-active');
+        activeNode = null;
+        pane.innerHTML = '<p class="rp-placeholder">\u2190 select an entry to read</p>';
+        return;
+      }
+      if (activeNode) activeNode.classList.remove('tl-active');
+      activeNode = el;
+      el.classList.add('tl-active');
+      pane.innerHTML = '<p class="rp-placeholder">loading\u2026</p>';
+      try {
+        var resp = await fetch(entry.href);
+        if (!resp.ok) throw new Error('HTTP ' + resp.status);
+        var html = await resp.text();
+        var doc = new DOMParser().parseFromString(html, 'text/html');
+        var dateEl      = doc.querySelector('.musing-date');
+        var postDatedEl = doc.querySelector('.post-dated');
+        var h1El        = doc.querySelector('.musing-header h1');
+        var bodyEl      = doc.querySelector('.musing-body');
+        var out = '<div class="rp-musing-meta">';
+        out += '<span class="musing-date">' + (dateEl ? dateEl.textContent.trim() : entry.dateStr) + '</span>';
+        out += ' <span class="musing-topic">[' + entry.topic + ']</span>';
+        out += '</div>';
+        if (postDatedEl) {
+          out += '<p class="post-dated">' + postDatedEl.textContent.trim() + '</p>';
+        }
+        out += '<h2 class="rp-title">' + (h1El ? h1El.textContent.trim() : entry.title) + '</h2>';
+        if (bodyEl) {
+          out += '<div class="musing-body">' + bodyEl.innerHTML + '</div>';
+        }
+        out += '<a class="rp-link" href="' + entry.href + '">read full post \u2192</a>';
+        pane.innerHTML = out;
+      } catch(e) {
+        console.error('[timeline] fetch failed for', entry.href, e);
+        // Fallback: show what we already have from the DOM
+        var out = '<div class="rp-musing-meta">';
+        out += '<span class="musing-date">' + entry.dateStr + '</span>';
+        out += ' <span class="musing-topic">[' + entry.topic + ']</span>';
+        out += '</div>';
+        out += '<h2 class="rp-title">' + entry.title + '</h2>';
+        out += '<div class="musing-body"><p>' + entry.subtitle + '</p></div>';
+        out += '<a class="rp-link" href="' + entry.href + '">read full post \u2192</a>';
+        pane.innerHTML = out;
+      }
+    }
+
+    var timelineBuilt = false;
+
+    function buildMusingsTimeline() {
+      if (timelineBuilt) return;
+      timelineBuilt = true;
+
+      var track = document.getElementById('tl-track');
+      var MONTH_SHORT = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      var data = MUSING_DATA;
+      if (!data.length) return;
+
+      var tMin = data[0].date.getTime();
+      var tMax = data[data.length - 1].date.getTime();
+      var span = tMax - tMin || 1;
+
+      var trackWidth = Math.max(data.length * 300 + 200, 1200);
+      track.style.minWidth = trackWidth + 'px';
+
+      var PAD = 0.08;
+      var MIN_GAP = 0.10;
+
+      var positions = data.map(function(e) {
+        return PAD + ((e.date.getTime() - tMin) / span) * (1 - 2 * PAD);
+      });
+      // Apply minimum gap between adjacent positions
+      for (var i = 1; i < positions.length; i++) {
+        if (positions[i] - positions[i - 1] < MIN_GAP) {
+          positions[i] = positions[i - 1] + MIN_GAP;
+        }
+      }
+
+      var multiYear = new Set(data.map(function(e) { return e.date.getFullYear(); })).size > 1;
+
+      function nodeLabel(date) {
+        var label = MONTH_SHORT[date.getMonth()] + ' ' + date.getDate();
+        if (multiYear) label += ' \'' + String(date.getFullYear()).slice(2);
+        return label;
+      }
+
+      function formatTime(date) {
+        var h = date.getHours();
+        var m = date.getMinutes();
+        var ap = h >= 12 ? 'PM' : 'AM';
+        h = h % 12 || 12;
+        return h + ':' + String(m).padStart(2, '0') + ' ' + ap;
+      }
+
+      data.forEach(function(entry, i) {
+        var isAbove = i % 2 === 0;
+        var ev = document.createElement('div');
+        ev.className = 'tl-event ' + (isAbove ? 'tl-above' : 'tl-below');
+        ev.style.left = (positions[i] * 100) + '%';
+
+        var note = '<div class="tl-note"><strong>' + entry.title + '</strong>'
+                 + '<p class="tl-month">' + formatTime(entry.date) + '</p>'
+                 + '<p>[' + entry.topic + ']</p></div>';
+        var stem = '<div class="tl-stem"></div>';
+        var node = '<div class="tl-node">' + nodeLabel(entry.date) + '</div>';
+
+        // tl-above: note → stem → node (node at bottom = centerline)
+        // tl-below: node → stem → note (node at top = centerline)
+        ev.innerHTML = isAbove ? note + stem + node : node + stem + note;
+
+        ev.addEventListener('click', function() { onNodeClick(ev, entry); });
+        track.appendChild(ev);
+      });
+
+      setupScrollControls();
+    }
+
+    // Toggle between list view and timeline view
+    document.getElementById('musings-tl-toggle').addEventListener('click', function() {
+      var listView = document.getElementById('musings-list-view');
+      var tlView   = document.getElementById('musings-tl-view');
+      var showing = !tlView.hidden;
+      if (showing) {
+        // Return to list
+        tlView.hidden = true;
+        listView.hidden = false;
+        stopAutoScroll();
+        this.textContent = '[timeline]';
+      } else {
+        // Show timeline
+        listView.hidden = true;
+        tlView.hidden = false;
+        this.textContent = '[\u2190 list]';
+        buildMusingsTimeline();
+      }
+    });
   </script>
   <script src="assets/js/player-bar.js"></script>
 

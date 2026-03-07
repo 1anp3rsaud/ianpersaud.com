@@ -241,6 +241,93 @@ main h2 {
   height: 14px;
 }
 
+/* ── Experience catchline ── */
+
+.exp-catchline {
+  font-size: 0.72rem;
+  color: var(--hero-name-color);
+  line-height: 1.6;
+  margin-top: 0.25rem;
+}
+
+/* ── Education ── */
+
+.edu-bar {
+  background: var(--edu-bg);
+  color: var(--edu-text);
+  border-radius: 4px;
+  margin-top: 0.75rem;
+  overflow: hidden;
+}
+
+.edu-bar-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.edu-monogram {
+  font-weight: 700;
+  font-size: 0.85rem;
+  min-width: 2rem;
+  text-align: center;
+  opacity: 0.9;
+  flex-shrink: 0;
+}
+
+.edu-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.edu-name {
+  font-weight: 700;
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+.edu-degree {
+  font-size: 0.65rem;
+  opacity: 0.85;
+  line-height: 1.3;
+}
+
+.edu-class {
+  font-size: 0.65rem;
+  white-space: nowrap;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+.edu-toggle {
+  margin-left: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--edu-text);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.75rem;
+  cursor: pointer;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.edu-details {
+  padding: 0.75rem 1rem 1rem;
+  font-size: 0.72rem;
+  line-height: 1.7;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.edu-details p {
+  margin-top: 0;
+  opacity: 0.92;
+}
+
 /* ── Footer ── */
 
 footer {
@@ -280,6 +367,10 @@ footer {
 
 /* ── Musings list ── */
 .musings-list { margin-top: 1rem; }
+
+.musing-entry.is-hidden {
+  display: none !important;
+}
 
 .musing-entry {
   display: block;
@@ -585,6 +676,44 @@ footer {
 .musing-header .musing-topic { display: block; margin-bottom: 0.25rem; }
 .musing-header h1 { margin-top: 0.25rem; }
 .musing-body p { margin-top: 1rem; opacity: 0.85; }
+
+/* ── Musings titlebar ── */
+.musings-titlebar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+.musings-page-title {
+  font-size: 0.85rem;
+  opacity: 0.65;
+}
+
+/* ── Musings timeline view ── */
+.musings-tl-view[hidden] { display: none; }
+.musings-tl-view {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 160px);
+  min-height: 420px;
+}
+.musings-tl-view .timeline-wrap {
+  flex-shrink: 0;
+  height: 300px;
+  margin-top: 0;
+}
+.musings-tl-view .tl-reading-pane {
+  position: static;
+  height: auto;
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 0;
+  border-top: 1px solid var(--border);
+}
+.rp-musing-meta {
+  margin-bottom: 0.5rem;
+  font-size: 0.7rem;
+}
 
 /* ── Timeline link button (homepage teaser) ── */
 .tl-link-btn {

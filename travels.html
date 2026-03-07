@@ -1,0 +1,460 @@
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Travels — Ian Persaud</title>
+  <meta name="description" content="Travels — Ian Persaud">
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <style>
+    /* Break map out of 800px body to full viewport width */
+    .map-wrap {
+      margin-left: calc(-50vw + 50%);
+      margin-right: calc(-50vw + 50%);
+      position: relative;
+      height: calc(100vh - 220px);
+      min-height: 460px;
+      margin-top: 1rem;
+      margin-bottom: 0;
+    }
+
+    #travels-map {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Ocean background per theme */
+    html.dark  #travels-map { background: #0a0a0a; }
+    html:not(.dark) #travels-map { background: #dce8ec; }
+
+    /* Country hover glow — toggled via JS classList */
+    .country-glow {
+      filter:
+        drop-shadow(0 0 5px rgba(57, 255, 20, 0.55))
+        drop-shadow(0 0 14px rgba(57, 255, 20, 0.28));
+    }
+
+    /* City pin tooltip */
+    .leaflet-tooltip.map-tt {
+      background: var(--bg);
+      border: 1px solid var(--tg);
+      color: var(--text);
+      font-family: 'Geist Mono', monospace;
+      font-size: 0.6rem;
+      padding: 0.2rem 0.5rem;
+      border-radius: 2px;
+      box-shadow: none;
+      white-space: nowrap;
+    }
+    .leaflet-tooltip.map-tt.leaflet-tooltip-top::before    { border-top-color: var(--tg); }
+    .leaflet-tooltip.map-tt.leaflet-tooltip-bottom::before { border-bottom-color: var(--tg); }
+
+    /* Country name tooltip — subtle */
+    .leaflet-tooltip.map-tt-country {
+      background: rgba(0, 0, 0, 0.6);
+      border: none;
+      color: rgba(210, 210, 210, 0.8);
+      font-family: 'Geist Mono', monospace;
+      font-size: 0.55rem;
+      padding: 0.15rem 0.4rem;
+      border-radius: 2px;
+      box-shadow: none;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .leaflet-tooltip.map-tt-country::before { display: none; }
+
+    /* World view button */
+    #world-btn {
+      display: none;
+      position: absolute;
+      top: 80px;
+      left: 10px;
+      z-index: 1000;
+      background: var(--bg);
+      border: 1px solid var(--tg);
+      color: var(--tg);
+      font-family: 'Geist Mono', monospace;
+      font-size: 0.6rem;
+      padding: 0.3rem 0.6rem;
+      cursor: pointer;
+      border-radius: 2px;
+    }
+    #world-btn:hover { background: rgba(57, 255, 20, 0.1); }
+
+    /* Map loading indicator */
+    #map-loading {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Geist Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--muted);
+      z-index: 900;
+      pointer-events: none;
+    }
+
+    /* Remove browser focus ring on interactive map paths */
+    .leaflet-interactive:focus { outline: none; }
+
+    /* Leaflet zoom controls */
+    .leaflet-control-zoom a {
+      background: var(--bg) !important;
+      color: var(--text) !important;
+      border-color: var(--border) !important;
+      font-family: 'Geist Mono', monospace !important;
+    }
+    .leaflet-control-zoom a:hover { color: var(--tg) !important; }
+
+    /* Attribution */
+    .leaflet-control-attribution {
+      background: rgba(0, 0, 0, 0.45) !important;
+      color: rgba(180, 180, 180, 0.5) !important;
+      font-size: 0.45rem !important;
+    }
+    .leaflet-control-attribution a { color: rgba(180, 180, 180, 0.6) !important; }
+
+    /* Legend */
+    .map-legend {
+      font-size: 0.6rem;
+      color: var(--muted);
+      margin-top: 0.4rem;
+      display: flex;
+      gap: 1.25rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .map-legend span { display: flex; align-items: center; gap: 0.3rem; }
+    .legend-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html">[/home]</a>
+    <a href="now-playing.html">[/now playing]</a>
+    <a href="experience.html">[/experience]</a>
+    <a href="musings.html">[/musings]</a>
+    <a href="travels.html" class="active">[/travels]</a>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">[&#9728;]</button>
+  </nav>
+  <p class="site-id">Ian Persaud</p>
+
+  <main>
+    <h2>Travels</h2>
+    <div class="map-legend">
+      <span><span class="legend-dot" style="background:#4da6ff;box-shadow:0 0 5px #4da6ff;"></span>home</span>
+      <span><span class="legend-dot" style="background:#39ff14;box-shadow:0 0 5px #39ff14;"></span>visited</span>
+      <span>🌲 national park</span>
+      <span class="text-muted">— hover to highlight · click a region to explore</span>
+    </div>
+
+    <div class="map-wrap">
+      <div id="travels-map"></div>
+      <div id="map-loading">loading map…</div>
+      <button id="world-btn">← world view</button>
+    </div>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="mailto:1anp3rsaud@gmail.com">email</a>
+      <a href="https://www.linkedin.com/in/ianpersaud/" target="_blank" rel="noopener">linkedin</a>
+    </div>
+    <span>&copy; <span id="year"></span> Ian Persaud</span>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="assets/js/site.js"></script>
+  <script>
+
+    // ── Map init ───────────────────────────────────────────────────────────────
+    var map = L.map('travels-map', {
+      zoomControl: true,
+      scrollWheelZoom: false,
+      minZoom: 2,
+      maxZoom: 13,
+      maxBounds: [[-90, -180], [90, 180]],
+      maxBoundsViscosity: 1.0,
+      worldCopyJump: false
+    }).setView([20, 15], 2);
+
+    // No tile layer — GeoJSON only (clean, no rivers, English labels)
+
+    var TG   = '#39ff14';
+    var BLUE = '#4da6ff';
+
+    // ── Interactive regions ────────────────────────────────────────────────────
+    // Each region: which ADM0_A3 codes belong to it, and the bounds to fly to on click
+    var regions = {
+      usa:       { codes: ['USA'],                                bounds: [[24.0, -125.5], [49.5,  -66.0]] },
+      eastAsia:  { codes: ['JPN', 'CHN', 'HKG'],                 bounds: [[18.0,  97.0],  [50.0,  148.0]] },
+      europe:    { codes: ['GBR', 'CZE', 'ESP', 'FRA', 'ITA'],   bounds: [[36.0, -10.0],  [60.0,   22.0]] },
+      caribbean: { codes: ['LCA', 'SXM', 'MAF', 'MEX'],          bounds: [[10.0, -93.0],  [28.0,  -55.0]] }
+    };
+
+    var countryToRegion = {};
+    Object.keys(regions).forEach(function(key) {
+      regions[key].codes.forEach(function(code) { countryToRegion[code] = key; });
+    });
+
+    var currentRegion       = null;
+    var ignoreNextMapClick  = false;
+
+    // ── Shared world-view reset ────────────────────────────────────────────────
+    function resetToWorldView() {
+      currentRegion = null;
+      setUSMarkers(false);
+      if (statesLayer && map.hasLayer(statesLayer)) map.removeLayer(statesLayer);
+      map.flyTo([20, 15], 2, { duration: 1.4 });
+    }
+
+    // ── Pin factories ──────────────────────────────────────────────────────────
+    function dotIcon(color) {
+      return L.divIcon({
+        className: '',
+        html: '<div style="width:8px;height:8px;border-radius:50%;background:' + color + ';box-shadow:0 0 6px ' + color + ';"></div>',
+        iconSize: [8, 8],
+        iconAnchor: [4, 4],
+        tooltipAnchor: [4, -6]
+      });
+    }
+
+    function treeIcon() {
+      return L.divIcon({
+        className: '',
+        html: '<span style="font-size:14px;line-height:1;display:block;">🌲</span>',
+        iconSize: [16, 16],
+        iconAnchor: [8, 10],
+        tooltipAnchor: [8, -10]
+      });
+    }
+
+    // ── International cities (always visible) ──────────────────────────────────
+    var intl = [
+      ['Florence',      'Italy',          43.7696,  11.2558],
+      ['Cinque Terre',  'Italy',          44.1461,   9.6439],
+      ['Tokyo',         'Japan',          35.6762, 139.6503],
+      ['Kyoto',         'Japan',          35.0116, 135.7681],
+      ['Osaka',         'Japan',          34.6937, 135.5023],
+      ['Hiroshima',     'Japan',          34.3853, 132.4553],
+      ['Hakone',        'Japan',          35.2323, 139.1069],
+      ['Nagano',        'Japan',          36.6485, 138.1957],
+      ['London',        'England',        51.5074,  -0.1278],
+      ['Prague',        'Czech Republic', 50.0755,  14.4378],
+      ['Barcelona',     'Spain',          41.3851,   2.1734],
+      ['Paris',         'France',         48.8566,   2.3522],
+      ['Hong Kong',     'China',          22.3193, 114.1694],
+      ['Beijing',       'China',          39.9042, 116.4074],
+      ['Shanghai',      'China',          31.2304, 121.4737],
+      ["Xi'an",         'China',          34.3416, 108.9398],
+      ['Castries',      'St. Lucia',      14.0101, -60.9875],
+      ['Philipsburg',   'Sint Maarten',   18.0231, -63.0472],
+      ['Cancún',        'Mexico',         21.1619, -86.8515],
+      ['Hyderabad',     'India',          17.3850,  78.4867],
+      ['Tirupati',      'India',          13.6288,  79.4192]
+    ];
+
+    intl.forEach(function(c) {
+      L.marker([c[2], c[3]], { icon: dotIcon(TG) })
+        .bindTooltip(c[0] + ', ' + c[1], { className: 'map-tt', direction: 'top' })
+        .addTo(map);
+    });
+
+    // ── US cities (shown only when US region is active) ────────────────────────
+    var usData = [
+      ['New York City',  'NY',      40.7128,  -74.0060, true ],
+      ['Boston',         'MA',      42.3601,  -71.0589, false],
+      ['Portland',       'Maine',   43.6591,  -70.2568, false],
+      ['Portland',       'Oregon',  45.5051, -122.6750, false],
+      ['San Francisco',  'CA',      37.7749, -122.4194, false],
+      ['Los Angeles',    'CA',      34.0522, -118.2437, false],
+      ['San Diego',      'CA',      32.7157, -117.1611, false],
+      ['Las Vegas',      'NV',      36.1699, -115.1398, false],
+      ['San Jose',       'CA',      37.3382, -121.8863, false],
+      ['Austin',         'TX',      30.2672,  -97.7431, false],
+      ['San Antonio',    'TX',      29.4241,  -98.4936, false],
+      ['New Orleans',    'LA',      29.9511,  -90.0715, false],
+      ['Washington',     'D.C.',    38.9072,  -77.0369, false],
+      ['Baltimore',      'MD',      39.2904,  -76.6122, false],
+      ['Philadelphia',   'PA',      39.9526,  -75.1652, false],
+      ['Providence',     'RI',      41.8240,  -71.4128, false],
+      ['Orlando',        'FL',      28.5383,  -81.3792, false],
+      ['Atlanta',        'GA',      33.7490,  -84.3880, false],
+      ['Charlotte',      'NC',      35.2271,  -80.8431, false],
+      ['Chicago',        'IL',      41.8781,  -87.6298, false],
+      ['Minneapolis',    'MN',      44.9778,  -93.2650, false],
+      ['Columbus',       'OH',      39.9612,  -82.9988, false],
+      ['Cleveland',      'OH',      41.4993,  -81.6944, false],
+      ['Burlington',     'VT',      44.4759,  -73.2121, false],
+      ['Ithaca',         'NY',      42.4440,  -76.5021, false],
+      ['Hartford',       'CT',      41.7658,  -72.6851, false],
+      ['Beacon',         'NY',      41.5051,  -73.9696, false],
+      ['Concord',        'MA',      42.4604,  -71.3489, false],
+      ['The Hamptons',   'NY',      40.9315,  -72.1859, false]
+    ];
+
+    var usParks = [
+      ['Shenandoah National Park',  'Virginia', 38.4755,  -78.4535],
+      ['Yellowstone National Park', 'Wyoming',  44.4280, -110.5885],
+      ['Everglades National Park',  'Florida',  25.2866,  -80.8987]
+    ];
+
+    var usMarkers = [];
+
+    usData.forEach(function(c) {
+      var label = c[4] ? c[0] + ' (home)' : c[0] + ', ' + c[1];
+      var m = L.marker([c[2], c[3]], { icon: dotIcon(c[4] ? BLUE : TG) })
+        .bindTooltip(label, { className: 'map-tt', direction: 'top' });
+      usMarkers.push(m);
+    });
+
+    usParks.forEach(function(p) {
+      var m = L.marker([p[2], p[3]], { icon: treeIcon() })
+        .bindTooltip(p[0] + ', ' + p[1], { className: 'map-tt', direction: 'top' });
+      usMarkers.push(m);
+    });
+
+    function setUSMarkers(show) {
+      usMarkers.forEach(function(m) {
+        if (show  && !map.hasLayer(m)) m.addTo(map);
+        if (!show &&  map.hasLayer(m)) map.removeLayer(m);
+      });
+    }
+
+    // ── State boundaries layer (loaded once, toggled on US region) ─────────────
+    var statesLayer = null;
+
+    fetch('assets/data/us-states.geojson')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        statesLayer = L.geoJSON(data, {
+          style: {
+            fillColor:   'transparent',
+            fillOpacity: 0,
+            color:       'rgba(57, 255, 20, 0.18)',
+            weight:      0.5
+          },
+          interactive: false
+        });
+        // In case user has already flown to US before this loaded
+        if (currentRegion === 'usa') statesLayer.addTo(map);
+      });
+
+    // ── Zoom events ────────────────────────────────────────────────────────────
+    map.on('zoomend', function() {
+      var z        = map.getZoom();
+      var isZoomed = z > 2;
+      var inUSA    = currentRegion === 'usa' && isZoomed;
+
+      document.getElementById('world-btn').style.display = isZoomed ? 'block' : 'none';
+      setUSMarkers(inUSA);
+
+      if (statesLayer) {
+        if ( inUSA && !map.hasLayer(statesLayer)) statesLayer.addTo(map);
+        if (!inUSA &&  map.hasLayer(statesLayer)) map.removeLayer(statesLayer);
+      }
+    });
+
+    // ── World view button ──────────────────────────────────────────────────────
+    document.getElementById('world-btn').addEventListener('click', function() {
+      ignoreNextMapClick = true; // this click is on an overlaid button, not the map
+      resetToWorldView();
+    });
+
+    // ── Click ocean / non-interactive country → return to world view ───────────
+    map.on('click', function() {
+      if (ignoreNextMapClick) { ignoreNextMapClick = false; return; }
+      if (map.getZoom() > 2) resetToWorldView();
+    });
+
+    // ── Scroll zoom: enable on map click, disable on outside click ─────────────
+    document.getElementById('travels-map').addEventListener('click', function() {
+      map.scrollWheelZoom.enable();
+    });
+    document.addEventListener('click', function(e) {
+      if (!document.getElementById('travels-map').contains(e.target)) {
+        map.scrollWheelZoom.disable();
+      }
+    });
+
+    // ── GeoJSON world layer ────────────────────────────────────────────────────
+    fetch('assets/data/world.geojson')
+      .then(function(r) { return r.json(); })
+      .then(function(data) {
+        L.geoJSON(data, {
+          filter: function(f) {
+            return f.properties.NAME !== 'Antarctica';
+          },
+          // All countries share the same default style — no special treatment
+          style: function() {
+            return {
+              fillColor:   '#1a1a1a',
+              fillOpacity: 1,
+              color:       '#2e2e2e',
+              weight:      0.5,
+              opacity:     1
+            };
+          },
+          onEachFeature: function(f, layer) {
+            var name = f.properties.NAME_EN || f.properties.NAME || '';
+            layer.bindTooltip(name, {
+              className: 'map-tt-country',
+              sticky:    true,
+              direction: 'top',
+              offset:    [0, -4]
+            });
+
+            var code      = f.properties.ADM0_A3;
+            var regionKey = countryToRegion[code];
+
+            if (regionKey) {
+              var regionBounds = L.latLngBounds(regions[regionKey].bounds);
+
+              layer.on('mouseover', function() {
+                this.setStyle({
+                  fillColor:   '#0a200a',
+                  fillOpacity: 1,
+                  color:       '#39ff14',
+                  weight:      1.5,
+                  opacity:     0.75
+                });
+                var el = this.getElement();
+                if (el) el.classList.add('country-glow');
+              });
+
+              layer.on('mouseout', function() {
+                this.setStyle({
+                  fillColor:   '#1a1a1a',
+                  fillOpacity: 1,
+                  color:       '#2e2e2e',
+                  weight:      0.5,
+                  opacity:     1
+                });
+                var el = this.getElement();
+                if (el) el.classList.remove('country-glow');
+              });
+
+              layer.on('click', function() {
+                ignoreNextMapClick = true; // prevent map click from resetting view
+                currentRegion = regionKey;
+                map.flyToBounds(regionBounds, { padding: [40, 40], duration: 1.2 });
+              });
+            }
+          }
+        }).addTo(map);
+
+        document.getElementById('map-loading').style.display = 'none';
+      })
+      .catch(function() {
+        document.getElementById('map-loading').textContent = 'map failed to load';
+      });
+
+  </script>
+  <script src="assets/js/player-bar.js"></script>
+
+</body>
+</html>
