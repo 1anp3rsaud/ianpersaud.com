@@ -303,7 +303,9 @@
 
         var note = '<div class="tl-note"><strong>' + entry.title + '</strong>'
                  + '<p class="tl-month">' + formatTime(entry.date) + '</p>'
-                 + '<p>[' + entry.topic + ']</p></div>';
+                 + '<p>[' + entry.topic + ']</p>'
+                 + '<a class="tl-read-link" href="' + entry.href + '">read post \u2192</a>'
+                 + '</div>';
         var stem = '<div class="tl-stem"></div>';
         var node = '<div class="tl-node">' + nodeLabel(entry.date) + '</div>';
 
@@ -311,7 +313,10 @@
         // tl-below: node → stem → note (node at top = centerline)
         ev.innerHTML = isAbove ? note + stem + node : node + stem + note;
 
-        ev.addEventListener('click', function() { onNodeClick(ev, entry); });
+        ev.addEventListener('click', function(e) {
+          if (e.target.closest('a')) return; // let link navigate
+          onNodeClick(ev, entry);
+        });
         track.appendChild(ev);
       });
 
@@ -337,6 +342,12 @@
         buildMusingsTimeline();
       }
     });
+
+    // Auto-activate timeline if URL hash is #timeline
+    if (location.hash === '#timeline') {
+      document.getElementById('musings-tl-toggle').click();
+      history.replaceState(null, '', location.pathname + location.search);
+    }
   </script>
   <script src="assets/js/player-bar.js"></script>
 

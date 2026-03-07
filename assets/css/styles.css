@@ -714,6 +714,15 @@ footer {
   margin-bottom: 0.5rem;
   font-size: 0.7rem;
 }
+.tl-note .tl-read-link {
+  display: inline-block;
+  margin-top: 0.4rem;
+  font-size: 0.6rem;
+  color: var(--tg);
+  text-decoration: none;
+  opacity: 0.75;
+}
+.tl-note .tl-read-link:hover { opacity: 1; }
 
 /* ── Timeline link button (homepage teaser) ── */
 .tl-link-btn {
