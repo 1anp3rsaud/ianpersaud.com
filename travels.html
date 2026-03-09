@@ -105,11 +105,7 @@
     html.dark       #travels-map { background: #0a0a0a; }
     html:not(.dark) #travels-map { background: #dce8ec; }
 
-    .country-glow {
-      filter:
-        drop-shadow(0 0 5px rgba(57, 255, 20, 0.55))
-        drop-shadow(0 0 14px rgba(57, 255, 20, 0.28));
-    }
+    .country-glow { /* glow applied via JS buildGlow() */ }
 
     .leaflet-tooltip.map-tt {
       background: var(--bg);
@@ -298,11 +294,29 @@
 
     // ── Interactive map regions ────────────────────────────────────────────────
     var regions = {
-      usa:       { codes: ['USA'],                              bounds: [[24.0, -125.5], [49.5,  -66.0]] },
-      eastAsia:  { codes: ['JPN', 'CHN', 'HKG'],               bounds: [[18.0,  97.0],  [50.0,  148.0]] },
-      europe:    { codes: ['GBR', 'CZE', 'ESP', 'FRA', 'ITA'], bounds: [[36.0, -10.0],  [60.0,   22.0]] },
-      caribbean: { codes: ['LCA', 'SXM', 'MAF', 'MEX', 'CRI'], bounds: [[ 8.0, -93.0],  [28.0,  -55.0]] }
+      usa:       { codes: ['USA'],                               bounds: [[24.0, -125.5], [49.5,  -66.0]], density: 5 },
+      eastAsia:  { codes: ['JPN', 'CHN', 'HKG'],                bounds: [[18.0,  97.0],  [50.0,  148.0]], density: 4 },
+      europe:    { codes: ['GBR', 'CZE', 'ESP', 'FRA', 'ITA'],  bounds: [[36.0, -10.0],  [60.0,   22.0]], density: 3 },
+      caribbean: { codes: ['LCA', 'SXM', 'MAF', 'MEX', 'CRI'],  bounds: [[ 8.0, -93.0],  [28.0,  -55.0]], density: 2 },
+      india:     { codes: ['IND'],                               bounds: [[ 8.0,  68.0],  [36.0,   98.0]], density: 1 }
     };
+
+    var countryCities = {
+      JPN:6, CHN:4, HKG:4, ITA:2, IND:2,
+      GBR:1, CZE:1, ESP:1, FRA:1, LCA:1, SXM:1, MAF:1, MEX:1, CRI:1, USA:40
+    };
+
+    var densityPadding = { 5:20, 4:25, 3:30, 2:38, 1:55 };
+
+    var regionMeta = {
+      usa:       'United States',
+      eastAsia:  'East Asia',
+      europe:    'Western Europe',
+      caribbean: 'Caribbean & Lat. Am.',
+      india:     'South Asia'
+    };
+
+    var regionSort = 'cities-desc';
 
     var countryToRegion = {};
     Object.keys(regions).forEach(function(key) {
@@ -329,8 +343,22 @@
       USA: { name: 'United States',  cities: [] }
     };
 
+    // ── Dynamic glow function ──────────────────────────────────────────────────
+    function buildGlow(count) {
+      var ratio = Math.log(count + 1) / Math.log(41);
+      var r1 = Math.round(4  + ratio * 20);
+      var r2 = Math.round(10 + ratio * 55);
+      var o1 = +(0.40 + ratio * 0.45).toFixed(2);
+      var o2 = +(0.15 + ratio * 0.30).toFixed(2);
+      var f  = 'drop-shadow(0 0 '+ r1 +'px rgba(57,255,20,'+ o1 +')) ' +
+               'drop-shadow(0 0 '+ r2 +'px rgba(57,255,20,'+ o2 +'))';
+      if (ratio > 0.50)
+        f += ' drop-shadow(0 0 '+ Math.round(r2 * 1.8) +'px rgba(57,255,20,0.09))';
+      return f;
+    }
+
     // ── Sidebar state ──────────────────────────────────────────────────────────
-    var sbBase   = 'world';   // persistent: 'world' | 'usa'
+    var sbBase   = 'world';   // persistent: 'world' | region key
     var sbHover  = null;      // country ADM0_A3 code when hovering, else null
     var usSort   = 'cities-desc';  // 'cities-desc' | 'cities-asc' | 'alpha'
     var usRegion = 'all';     // 'all' | 'northeast' | 'appalachia' | 'south' | 'midwest' | 'west'
@@ -514,12 +542,13 @@
     // ── Sidebar render ─────────────────────────────────────────────────────────
     function renderSidebar() {
       var panel = document.getElementById('travels-sidebar');
-      var mode  = sbBase === 'usa'  ? 'usa'
-                : sbHover           ? 'country'
+      var mode  = sbBase !== 'world' ? sbBase
+                : sbHover            ? 'country'
                 : 'world';
-      if      (mode === 'usa')     { panel.innerHTML = buildUSAView();          attachUSAControls(); }
+      if      (mode === 'world')   { panel.innerHTML = buildWorldView(); }
       else if (mode === 'country') { panel.innerHTML = buildCountryView(sbHover); }
-      else                         { panel.innerHTML = buildWorldView(); }
+      else if (mode === 'usa')     { panel.innerHTML = buildUSAView();          attachUSAControls(); }
+      else                         { panel.innerHTML = buildRegionView(mode);   attachRegionControls(); }
     }
 
     function e(tag, cls, html) {
@@ -630,6 +659,53 @@
       });
     }
 
+    function buildRegionView(regionKey) {
+      var codes = regions[regionKey].codes;
+      var seen = {}, countries = [];
+      codes.forEach(function(code) {
+        var info = countryInfo[code];
+        if (info && !seen[info.name]) {
+          seen[info.name] = true;
+          countries.push({ name: info.name, cities: info.cities });
+        }
+      });
+      countries.sort(function(a, b) {
+        if (regionSort === 'alpha') return a.name < b.name ? -1 : 1;
+        if (regionSort === 'cities-asc') return a.cities.length - b.cities.length;
+        return b.cities.length - a.cities.length;
+      });
+      var totalCities = countries.reduce(function(sum, c) { return sum + c.cities.length; }, 0);
+
+      var out = e('div', 'sb-title', regionMeta[regionKey]);
+      out += e('div', 'sb-stat', e('strong','',countries.length) + ' ' + (countries.length === 1 ? 'country' : 'countries'));
+      out += e('div', 'sb-stat', e('strong','',totalCities) + ' cities');
+      out += '<hr class="sb-divider">';
+      out += e('div', 'sb-label', 'sort');
+      out += '<div class="sb-controls" id="sb-rsort">';
+      [['cities-desc','most'],['cities-asc','fewest'],['alpha','A–Z']].forEach(function(s) {
+        out += '<button class="sb-btn'+(regionSort===s[0]?' active':'')+'" data-rsort="'+s[0]+'">'+s[1]+'</button>';
+      });
+      out += '</div><hr class="sb-divider">';
+      countries.forEach(function(c) {
+        out += '<div class="sb-state">' +
+          '<div class="sb-state-name"><span>'+c.name+'</span>'+
+          e('span','sb-state-count',c.cities.length+'')+
+          '</div><div class="sb-state-cities">' +
+          c.cities.map(function(city){ return e('div','sb-item',city); }).join('') +
+          '</div></div>';
+      });
+      return out;
+    }
+
+    function attachRegionControls() {
+      document.querySelectorAll('#sb-rsort .sb-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          regionSort = this.dataset.rsort;
+          renderSidebar();
+        });
+      });
+    }
+
     // Initial render
     renderSidebar();
 
@@ -691,9 +767,9 @@
               layer.on('mouseover', function() {
                 this.setStyle({ fillColor:'#0a200a', fillOpacity:1, color:'#39ff14', weight:1.5, opacity:0.75 });
                 var el = this.getElement();
-                if (el) el.classList.add('country-glow');
-                // Update sidebar only if not locked to USA view
-                if (sbBase !== 'usa') {
+                if (el) el.style.filter = buildGlow(countryCities[code] || 1);
+                // Update sidebar only if not locked to a region view
+                if (sbBase === 'world') {
                   sbHover = code;
                   renderSidebar();
                 }
@@ -702,8 +778,8 @@
               layer.on('mouseout', function() {
                 this.setStyle({ fillColor:'#1a1a1a', fillOpacity:1, color:'#2e2e2e', weight:0.5, opacity:1 });
                 var el = this.getElement();
-                if (el) el.classList.remove('country-glow');
-                if (sbBase !== 'usa') {
+                if (el) el.style.filter = '';
+                if (sbBase === 'world') {
                   sbHover = null;
                   renderSidebar();
                 }
@@ -714,12 +790,11 @@
                 layer.on('click', function() {
                   ignoreNextMapClick = true;
                   currentRegion = regionKey;
-                  if (regionKey === 'usa') {
-                    sbBase  = 'usa';
-                    sbHover = null;
-                    renderSidebar();
-                  }
-                  map.flyToBounds(regionBounds, { padding: [40, 40], duration: 1.2 });
+                  sbBase  = regionKey;
+                  sbHover = null;
+                  renderSidebar();
+                  var pad = densityPadding[regions[regionKey].density] || 40;
+                  map.flyToBounds(regionBounds, { padding: [pad, pad], duration: 1.2 });
                 });
               }
             }
