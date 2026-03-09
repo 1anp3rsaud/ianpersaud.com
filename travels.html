@@ -8,34 +8,109 @@
   <link rel="stylesheet" href="assets/css/styles.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <style>
-    /* Break map out of 800px body to full viewport width */
-    .map-wrap {
+    /* Full-width flex layout: sidebar + map */
+    .travels-layout {
       margin-left: calc(-50vw + 50%);
       margin-right: calc(-50vw + 50%);
-      position: relative;
-      height: calc(100vh - 220px);
-      min-height: 460px;
+      display: flex;
+      height: calc(100vh - 200px);
+      min-height: 480px;
       margin-top: 1rem;
       margin-bottom: 0;
     }
 
-    #travels-map {
-      width: 100%;
-      height: 100%;
+    /* ── Sidebar ────────────────────────────────────────────────── */
+    .travels-sidebar {
+      width: 210px;
+      flex-shrink: 0;
+      background: var(--bg);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 0.8rem 0.75rem;
+      font-family: 'Geist Mono', monospace;
+      font-size: 0.58rem;
+      color: var(--text);
+      scrollbar-width: thin;
+      scrollbar-color: var(--border) transparent;
     }
+    .travels-sidebar::-webkit-scrollbar { width: 4px; }
+    .travels-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
-    /* Ocean background per theme */
-    html.dark  #travels-map { background: #0a0a0a; }
+    .sb-title {
+      font-size: 0.6rem;
+      color: var(--tg);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.35rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .sb-stat { color: var(--muted); margin-bottom: 0.12rem; line-height: 1.5; }
+    .sb-stat strong { color: var(--text); }
+    .sb-divider { border: none; border-top: 1px solid var(--border); margin: 0.5rem 0; }
+
+    .sb-label {
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      font-size: 0.48rem;
+      margin: 0.55rem 0 0.2rem;
+    }
+    .sb-item { color: var(--text); line-height: 1.65; }
+    .sb-item-home { color: #4da6ff; }
+    .sb-item-park { color: var(--muted); }
+
+    /* US state blocks */
+    .sb-state { margin-bottom: 0.55rem; }
+    .sb-state-name {
+      color: var(--tg);
+      font-size: 0.57rem;
+      margin-bottom: 0.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .sb-state-count { color: var(--muted); font-size: 0.5rem; }
+    .sb-state-cities { padding-left: 0.6rem; }
+
+    /* Sort / filter controls */
+    .sb-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.22rem;
+      margin-bottom: 0.3rem;
+    }
+    .sb-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'Geist Mono', monospace;
+      font-size: 0.48rem;
+      padding: 0.12rem 0.32rem;
+      cursor: pointer;
+      border-radius: 2px;
+      line-height: 1.4;
+    }
+    .sb-btn:hover { border-color: var(--tg); color: var(--tg); }
+    .sb-btn.active { border-color: var(--tg); color: var(--tg); background: rgba(57,255,20,0.07); }
+
+    /* ── Map area ───────────────────────────────────────────────── */
+    .map-wrap {
+      flex: 1;
+      position: relative;
+      min-width: 0;
+    }
+    #travels-map { width: 100%; height: 100%; }
+
+    html.dark       #travels-map { background: #0a0a0a; }
     html:not(.dark) #travels-map { background: #dce8ec; }
 
-    /* Country hover glow — toggled via JS classList */
     .country-glow {
       filter:
         drop-shadow(0 0 5px rgba(57, 255, 20, 0.55))
         drop-shadow(0 0 14px rgba(57, 255, 20, 0.28));
     }
 
-    /* City pin tooltip */
     .leaflet-tooltip.map-tt {
       background: var(--bg);
       border: 1px solid var(--tg);
@@ -50,7 +125,6 @@
     .leaflet-tooltip.map-tt.leaflet-tooltip-top::before    { border-top-color: var(--tg); }
     .leaflet-tooltip.map-tt.leaflet-tooltip-bottom::before { border-bottom-color: var(--tg); }
 
-    /* Country name tooltip — subtle */
     .leaflet-tooltip.map-tt-country {
       background: rgba(0, 0, 0, 0.6);
       border: none;
@@ -65,7 +139,6 @@
     }
     .leaflet-tooltip.map-tt-country::before { display: none; }
 
-    /* World view button */
     #world-btn {
       display: none;
       position: absolute;
@@ -83,7 +156,6 @@
     }
     #world-btn:hover { background: rgba(57, 255, 20, 0.1); }
 
-    /* Map loading indicator */
     #map-loading {
       position: absolute;
       inset: 0;
@@ -97,10 +169,8 @@
       pointer-events: none;
     }
 
-    /* Remove browser focus ring on interactive map paths */
     .leaflet-interactive:focus { outline: none; }
 
-    /* Leaflet zoom controls */
     .leaflet-control-zoom a {
       background: var(--bg) !important;
       color: var(--text) !important;
@@ -109,7 +179,6 @@
     }
     .leaflet-control-zoom a:hover { color: var(--tg) !important; }
 
-    /* Attribution */
     .leaflet-control-attribution {
       background: rgba(0, 0, 0, 0.45) !important;
       color: rgba(180, 180, 180, 0.5) !important;
@@ -149,13 +218,16 @@
       <span><span class="legend-dot" style="background:#4da6ff;box-shadow:0 0 5px #4da6ff;"></span>home</span>
       <span><span class="legend-dot" style="background:#39ff14;box-shadow:0 0 5px #39ff14;"></span>visited</span>
       <span>🌲 national park</span>
-      <span class="text-muted">— hover to highlight · click a region to explore</span>
+      <span class="text-muted">— hover countries · click a region to explore</span>
     </div>
 
-    <div class="map-wrap">
-      <div id="travels-map"></div>
-      <div id="map-loading">loading map…</div>
-      <button id="world-btn">← world view</button>
+    <div class="travels-layout">
+      <div class="travels-sidebar" id="travels-sidebar"></div>
+      <div class="map-wrap">
+        <div id="travels-map"></div>
+        <div id="map-loading">loading map…</div>
+        <button id="world-btn">← world view</button>
+      </div>
     </div>
   </main>
 
@@ -182,18 +254,54 @@
       worldCopyJump: false
     }).setView([20, 15], 2);
 
-    // No tile layer — GeoJSON only (clean, no rivers, English labels)
-
     var TG   = '#39ff14';
     var BLUE = '#4da6ff';
 
-    // ── Interactive regions ────────────────────────────────────────────────────
-    // Each region: which ADM0_A3 codes belong to it, and the bounds to fly to on click
+    // ── US Region → state abbr mapping ────────────────────────────────────────
+    var stateRegions = {
+      // Northeast
+      CT:'northeast', DC:'northeast', DE:'northeast', MA:'northeast',
+      MD:'northeast', ME:'northeast', NH:'northeast', NJ:'northeast',
+      NY:'northeast', PA:'northeast', RI:'northeast', VT:'northeast',
+      // Appalachia
+      KY:'appalachia', NC:'appalachia', TN:'appalachia', VA:'appalachia', WV:'appalachia',
+      // South
+      AL:'south', AR:'south', FL:'south', GA:'south', LA:'south',
+      MS:'south', OK:'south', SC:'south', TX:'south',
+      // Midwest
+      IA:'midwest', IL:'midwest', IN:'midwest', KS:'midwest', MI:'midwest',
+      MN:'midwest', MO:'midwest', ND:'midwest', NE:'midwest', OH:'midwest',
+      SD:'midwest', WI:'midwest',
+      // West
+      AK:'west', AZ:'west', CA:'west', CO:'west', HI:'west',
+      ID:'west', MT:'west', NM:'west', NV:'west', OR:'west',
+      UT:'west', WA:'west', WY:'west'
+    };
+
+    var stateNames = {
+      AL:'Alabama', AK:'Alaska', AZ:'Arizona', AR:'Arkansas', CA:'California',
+      CO:'Colorado', CT:'Connecticut', DC:'Washington D.C.', DE:'Delaware',
+      FL:'Florida', GA:'Georgia', HI:'Hawaii', ID:'Idaho', IL:'Illinois',
+      IN:'Indiana', IA:'Iowa', KS:'Kansas', KY:'Kentucky', LA:'Louisiana',
+      ME:'Maine', MD:'Maryland', MA:'Massachusetts', MI:'Michigan', MN:'Minnesota',
+      MS:'Mississippi', MO:'Missouri', MT:'Montana', NE:'Nebraska', NV:'Nevada',
+      NH:'New Hampshire', NJ:'New Jersey', NM:'New Mexico', NY:'New York',
+      NC:'North Carolina', ND:'North Dakota', OH:'Ohio', OK:'Oklahoma', OR:'Oregon',
+      PA:'Pennsylvania', RI:'Rhode Island', SC:'South Carolina', SD:'South Dakota',
+      TN:'Tennessee', TX:'Texas', UT:'Utah', VT:'Vermont', VA:'Virginia',
+      WA:'Washington', WV:'West Virginia', WI:'Wisconsin', WY:'Wyoming'
+    };
+
+    // Normalize full state names used in usData to abbreviations
+    var stateAliases = { 'Maine':'ME', 'Oregon':'OR', 'D.C.':'DC' };
+    function normState(s) { return stateAliases[s] || s; }
+
+    // ── Interactive map regions ────────────────────────────────────────────────
     var regions = {
-      usa:       { codes: ['USA'],                                bounds: [[24.0, -125.5], [49.5,  -66.0]] },
-      eastAsia:  { codes: ['JPN', 'CHN', 'HKG'],                 bounds: [[18.0,  97.0],  [50.0,  148.0]] },
-      europe:    { codes: ['GBR', 'CZE', 'ESP', 'FRA', 'ITA'],   bounds: [[36.0, -10.0],  [60.0,   22.0]] },
-      caribbean: { codes: ['LCA', 'SXM', 'MAF', 'MEX', 'CRI'],    bounds: [[8.0, -93.0],   [28.0,  -55.0]] }
+      usa:       { codes: ['USA'],                              bounds: [[24.0, -125.5], [49.5,  -66.0]] },
+      eastAsia:  { codes: ['JPN', 'CHN', 'HKG'],               bounds: [[18.0,  97.0],  [50.0,  148.0]] },
+      europe:    { codes: ['GBR', 'CZE', 'ESP', 'FRA', 'ITA'], bounds: [[36.0, -10.0],  [60.0,   22.0]] },
+      caribbean: { codes: ['LCA', 'SXM', 'MAF', 'MEX', 'CRI'], bounds: [[ 8.0, -93.0],  [28.0,  -55.0]] }
     };
 
     var countryToRegion = {};
@@ -201,15 +309,44 @@
       regions[key].codes.forEach(function(code) { countryToRegion[code] = key; });
     });
 
-    var currentRegion       = null;
-    var ignoreNextMapClick  = false;
+    // ── Country code → sidebar data ────────────────────────────────────────────
+    // CHN and HKG share a display group; MAF shares with SXM
+    var countryInfo = {
+      ITA: { name: 'Italy',          cities: ['Florence', 'Cinque Terre'] },
+      JPN: { name: 'Japan',          cities: ['Tokyo', 'Kyoto', 'Osaka', 'Hiroshima', 'Hakone', 'Nagano'] },
+      GBR: { name: 'England',        cities: ['London'] },
+      CZE: { name: 'Czech Republic', cities: ['Prague'] },
+      ESP: { name: 'Spain',          cities: ['Barcelona'] },
+      FRA: { name: 'France',         cities: ['Paris'] },
+      CHN: { name: 'China / HK',     cities: ['Hong Kong', 'Beijing', 'Shanghai', "Xi'an"] },
+      HKG: { name: 'China / HK',     cities: ['Hong Kong', 'Beijing', 'Shanghai', "Xi'an"] },
+      LCA: { name: 'St. Lucia',      cities: ['Castries'] },
+      SXM: { name: 'Sint Maarten',   cities: ['Philipsburg'] },
+      MAF: { name: 'Sint Maarten',   cities: ['Philipsburg'] },
+      MEX: { name: 'Mexico',         cities: ['Cancún'] },
+      IND: { name: 'India',          cities: ['Hyderabad', 'Tirupati'] },
+      CRI: { name: 'Costa Rica',     cities: ['San José'] },
+      USA: { name: 'United States',  cities: [] }
+    };
+
+    // ── Sidebar state ──────────────────────────────────────────────────────────
+    var sbBase   = 'world';   // persistent: 'world' | 'usa'
+    var sbHover  = null;      // country ADM0_A3 code when hovering, else null
+    var usSort   = 'cities-desc';  // 'cities-desc' | 'cities-asc' | 'alpha'
+    var usRegion = 'all';     // 'all' | 'northeast' | 'appalachia' | 'south' | 'midwest' | 'west'
+
+    var currentRegion      = null;
+    var ignoreNextMapClick = false;
 
     // ── Shared world-view reset ────────────────────────────────────────────────
     function resetToWorldView() {
       currentRegion = null;
+      sbBase        = 'world';
+      sbHover       = null;
       setUSMarkers(false);
       if (statesLayer && map.hasLayer(statesLayer)) map.removeLayer(statesLayer);
       map.flyTo([20, 15], 2, { duration: 1.4 });
+      renderSidebar();
     }
 
     // ── Pin factories ──────────────────────────────────────────────────────────
@@ -217,19 +354,14 @@
       return L.divIcon({
         className: '',
         html: '<div style="width:8px;height:8px;border-radius:50%;background:' + color + ';box-shadow:0 0 6px ' + color + ';"></div>',
-        iconSize: [8, 8],
-        iconAnchor: [4, 4],
-        tooltipAnchor: [4, -6]
+        iconSize: [8, 8], iconAnchor: [4, 4], tooltipAnchor: [4, -6]
       });
     }
-
     function treeIcon() {
       return L.divIcon({
         className: '',
         html: '<span style="font-size:14px;line-height:1;display:block;">🌲</span>',
-        iconSize: [16, 16],
-        iconAnchor: [8, 10],
-        tooltipAnchor: [8, -10]
+        iconSize: [16, 16], iconAnchor: [8, 10], tooltipAnchor: [8, -10]
       });
     }
 
@@ -282,6 +414,7 @@
       ['Washington',     'D.C.',    38.9072,  -77.0369, false],
       ['Baltimore',      'MD',      39.2904,  -76.6122, false],
       ['Philadelphia',   'PA',      39.9526,  -75.1652, false],
+      ['Pittsburgh',     'PA',      40.4406,  -79.9959, false],
       ['Providence',     'RI',      41.8240,  -71.4128, false],
       ['Orlando',        'FL',      28.5383,  -81.3792, false],
       ['Atlanta',        'GA',      33.7490,  -84.3880, false],
@@ -301,7 +434,7 @@
       ['Binghamton',     'NY',      42.0987,  -75.9179, false],
       ['New Paltz',      'NY',      41.7462,  -74.0921, false],
       ['Denver',         'CO',      39.7392, -104.9903, false],
-      ["Harpers Ferry",  'WV',      39.3251,  -77.7311, false],
+      ['Harpers Ferry',  'WV',      39.3251,  -77.7311, false],
       ['Nashville',      'TN',      36.1627,  -86.7816, false],
       ['Cape Cod',       'MA',      41.6688,  -70.2962, false],
       ['Sarasota',       'FL',      27.3364,  -82.5307, false],
@@ -309,24 +442,23 @@
     ];
 
     var usParks = [
-      ['Shenandoah National Park',          'Virginia',   38.4755,  -78.4535],
-      ['Yellowstone National Park',          'Wyoming',    44.4280, -110.5885],
-      ['Everglades National Park',           'Florida',    25.2866,  -80.8987],
-      ['Fire Island National Seashore',      'New York',   40.7190,  -73.1357],
-      ['Gateway National Recreation Area',   'New York',   40.5618,  -74.0582]
+      ['Shenandoah National Park',          'Virginia',  'VA', 38.4755,  -78.4535],
+      ['Yellowstone National Park',          'Wyoming',   'WY', 44.4280, -110.5885],
+      ['Everglades National Park',           'Florida',   'FL', 25.2866,  -80.8987],
+      ['Fire Island National Seashore',      'New York',  'NY', 40.7190,  -73.1357],
+      ['Gateway National Recreation Area',   'New York',  'NY', 40.5618,  -74.0582]
     ];
 
+    // Map markers
     var usMarkers = [];
-
     usData.forEach(function(c) {
-      var label = c[4] ? c[0] + ' (home)' : c[0] + ', ' + c[1];
+      var label = c[4] ? c[0] + ' (home)' : c[0] + ', ' + normState(c[1]);
       var m = L.marker([c[2], c[3]], { icon: dotIcon(c[4] ? BLUE : TG) })
         .bindTooltip(label, { className: 'map-tt', direction: 'top' });
       usMarkers.push(m);
     });
-
     usParks.forEach(function(p) {
-      var m = L.marker([p[2], p[3]], { icon: treeIcon() })
+      var m = L.marker([p[3], p[4]], { icon: treeIcon() })
         .bindTooltip(p[0] + ', ' + p[1], { className: 'map-tt', direction: 'top' });
       usMarkers.push(m);
     });
@@ -338,34 +470,176 @@
       });
     }
 
-    // ── State boundaries layer (loaded once, toggled on US region) ─────────────
+    // ── State boundaries layer ─────────────────────────────────────────────────
     var statesLayer = null;
-
     fetch('assets/data/us-states.geojson')
       .then(function(r) { return r.json(); })
       .then(function(data) {
         statesLayer = L.geoJSON(data, {
-          style: {
-            fillColor:   'transparent',
-            fillOpacity: 0,
-            color:       'rgba(57, 255, 20, 0.18)',
-            weight:      0.5
-          },
+          style: { fillColor:'transparent', fillOpacity:0, color:'rgba(57,255,20,0.18)', weight:0.5 },
           interactive: false
         });
-        // In case user has already flown to US before this loaded
         if (currentRegion === 'usa') statesLayer.addTo(map);
       });
 
+    // ── Sidebar data ───────────────────────────────────────────────────────────
+    // Unique countries for the intl list
+    var intlCountries = [];
+    var _seenCountries = {};
+    intl.forEach(function(c) {
+      if (!_seenCountries[c[1]]) { _seenCountries[c[1]] = true; intlCountries.push(c[1]); }
+    });
+    intlCountries.sort();
+    var totalCountries = intlCountries.length + 1; // +1 USA
+
+    // Group usData by normalized state abbr
+    var usByState = {};
+    usData.forEach(function(c) {
+      var s = normState(c[1]);
+      if (!usByState[s]) usByState[s] = { cities: [], home: null, parks: [] };
+      if (c[4]) usByState[s].home = c[0];
+      else      usByState[s].cities.push(c[0]);
+    });
+    // Merge parks into state data
+    usParks.forEach(function(p) {
+      var s = p[2];
+      if (!usByState[s]) usByState[s] = { cities: [], home: null, parks: [] };
+      usByState[s].parks.push(p[0]);
+    });
+
+    var statesVisited = Object.keys(usByState).length;
+    var usCitiesCount = usData.length;
+    var parksCount    = usParks.length;
+
+    // ── Sidebar render ─────────────────────────────────────────────────────────
+    function renderSidebar() {
+      var panel = document.getElementById('travels-sidebar');
+      var mode  = sbBase === 'usa'  ? 'usa'
+                : sbHover           ? 'country'
+                : 'world';
+      if      (mode === 'usa')     { panel.innerHTML = buildUSAView();          attachUSAControls(); }
+      else if (mode === 'country') { panel.innerHTML = buildCountryView(sbHover); }
+      else                         { panel.innerHTML = buildWorldView(); }
+    }
+
+    function e(tag, cls, html) {
+      return '<' + tag + (cls ? ' class="' + cls + '"' : '') + '>' + html + '</' + tag + '>';
+    }
+
+    function buildWorldView() {
+      var out = e('div', 'sb-title', 'travels');
+      out += e('div', 'sb-stat', e('strong', '', totalCountries) + ' countries');
+      out += e('div', 'sb-stat', e('strong', '', intl.length + usCitiesCount) + ' cities');
+      out += e('div', 'sb-stat', e('strong', '', parksCount) + ' national parks');
+      out += '<hr class="sb-divider">';
+      out += e('div', 'sb-label', 'countries visited');
+      intlCountries.forEach(function(c) { out += e('div', 'sb-item', c); });
+      out += e('div', 'sb-item', 'United States');
+      return out;
+    }
+
+    function buildCountryView(code) {
+      if (!code || !countryInfo[code]) return buildWorldView();
+      if (code === 'USA') {
+        // Hover preview — don't lock sbBase; click locks it
+        var out = e('div', 'sb-title', 'United States');
+        out += e('div', 'sb-stat', e('strong', '', statesVisited) + ' states');
+        out += e('div', 'sb-stat', e('strong', '', usCitiesCount) + ' cities');
+        out += e('div', 'sb-stat', e('strong', '', parksCount) + ' national parks');
+        out += '<hr class="sb-divider">';
+        out += e('div', 'sb-label', 'click map to explore →');
+        return out;
+      }
+      var info = countryInfo[code];
+      var out  = e('div', 'sb-title', info.name);
+      var cities = info.cities;
+      out += e('div', 'sb-stat', e('strong', '', cities.length) + ' ' + (cities.length === 1 ? 'city' : 'cities'));
+      if (cities.length) {
+        out += '<hr class="sb-divider">';
+        out += e('div', 'sb-label', 'cities');
+        cities.forEach(function(c) { out += e('div', 'sb-item', c); });
+      }
+      return out;
+    }
+
+    function buildUSAView() {
+      var out = e('div', 'sb-title', 'united states');
+      out += e('div', 'sb-stat', e('strong', '', statesVisited) + ' states');
+      out += e('div', 'sb-stat', e('strong', '', usCitiesCount) + ' cities');
+      out += e('div', 'sb-stat', e('strong', '', parksCount) + ' national parks');
+      out += '<hr class="sb-divider">';
+
+      // Sort controls
+      out += e('div', 'sb-label', 'sort');
+      out += '<div class="sb-controls" id="sb-sort">';
+      [['cities-desc','most cities'],['cities-asc','fewest'],['alpha','A–Z']].forEach(function(s) {
+        out += '<button class="sb-btn' + (usSort === s[0] ? ' active' : '') + '" data-sort="' + s[0] + '">' + s[1] + '</button>';
+      });
+      out += '</div>';
+
+      // Region filter
+      out += e('div', 'sb-label', 'region');
+      out += '<div class="sb-controls" id="sb-region">';
+      ['all','northeast','appalachia','south','midwest','west'].forEach(function(r) {
+        out += '<button class="sb-btn' + (usRegion === r ? ' active' : '') + '" data-region="' + r + '">' + r + '</button>';
+      });
+      out += '</div>';
+      out += '<hr class="sb-divider">';
+
+      // Build filtered + sorted state list
+      var keys = Object.keys(usByState);
+      if (usRegion !== 'all') {
+        keys = keys.filter(function(s) { return stateRegions[s] === usRegion; });
+      }
+      keys.sort(function(a, b) {
+        var ca = (usByState[a].home ? 1 : 0) + usByState[a].cities.length + usByState[a].parks.length;
+        var cb = (usByState[b].home ? 1 : 0) + usByState[b].cities.length + usByState[b].parks.length;
+        if (usSort === 'alpha') {
+          var na = stateNames[a] || a, nb = stateNames[b] || b;
+          return na < nb ? -1 : na > nb ? 1 : 0;
+        }
+        return usSort === 'cities-asc' ? ca - cb : cb - ca;
+      });
+
+      keys.forEach(function(s) {
+        var sd = usByState[s];
+        var total = (sd.home ? 1 : 0) + sd.cities.length + sd.parks.length;
+        var citiesHtml = '';
+        if (sd.home) citiesHtml += e('div', 'sb-item sb-item-home', '★ ' + sd.home);
+        sd.cities.forEach(function(c) { citiesHtml += e('div', 'sb-item', c); });
+        sd.parks.forEach(function(p) { citiesHtml += e('div', 'sb-item sb-item-park', '🌲 ' + p); });
+
+        out += '<div class="sb-state">' +
+          '<div class="sb-state-name">' +
+            '<span>' + (stateNames[s] || s) + '</span>' +
+            e('span', 'sb-state-count', total + '') +
+          '</div>' +
+          e('div', 'sb-state-cities', citiesHtml) +
+          '</div>';
+      });
+
+      return out;
+    }
+
+    function attachUSAControls() {
+      document.querySelectorAll('#sb-sort .sb-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { usSort = this.dataset.sort; renderSidebar(); });
+      });
+      document.querySelectorAll('#sb-region .sb-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { usRegion = this.dataset.region; renderSidebar(); });
+      });
+    }
+
+    // Initial render
+    renderSidebar();
+
     // ── Zoom events ────────────────────────────────────────────────────────────
     map.on('zoomend', function() {
-      var z        = map.getZoom();
-      var isZoomed = z > 2;
-      var inUSA    = currentRegion === 'usa' && isZoomed;
-
-      document.getElementById('world-btn').style.display = isZoomed ? 'block' : 'none';
+      var z     = map.getZoom();
+      var zoomed = z > 2;
+      var inUSA  = currentRegion === 'usa' && zoomed;
+      document.getElementById('world-btn').style.display = zoomed ? 'block' : 'none';
       setUSMarkers(inUSA);
-
       if (statesLayer) {
         if ( inUSA && !map.hasLayer(statesLayer)) statesLayer.addTo(map);
         if (!inUSA &&  map.hasLayer(statesLayer)) map.removeLayer(statesLayer);
@@ -374,17 +648,17 @@
 
     // ── World view button ──────────────────────────────────────────────────────
     document.getElementById('world-btn').addEventListener('click', function() {
-      ignoreNextMapClick = true; // this click is on an overlaid button, not the map
+      ignoreNextMapClick = true;
       resetToWorldView();
     });
 
-    // ── Click ocean / non-interactive country → return to world view ───────────
+    // ── Click ocean → world view ───────────────────────────────────────────────
     map.on('click', function() {
       if (ignoreNextMapClick) { ignoreNextMapClick = false; return; }
       if (map.getZoom() > 2) resetToWorldView();
     });
 
-    // ── Scroll zoom: enable on map click, disable on outside click ─────────────
+    // ── Scroll zoom ────────────────────────────────────────────────────────────
     document.getElementById('travels-map').addEventListener('click', function() {
       map.scrollWheelZoom.enable();
     });
@@ -399,63 +673,55 @@
       .then(function(r) { return r.json(); })
       .then(function(data) {
         L.geoJSON(data, {
-          filter: function(f) {
-            return f.properties.NAME !== 'Antarctica';
-          },
-          // All countries share the same default style — no special treatment
+          filter: function(f) { return f.properties.NAME !== 'Antarctica'; },
           style: function() {
-            return {
-              fillColor:   '#1a1a1a',
-              fillOpacity: 1,
-              color:       '#2e2e2e',
-              weight:      0.5,
-              opacity:     1
-            };
+            return { fillColor:'#1a1a1a', fillOpacity:1, color:'#2e2e2e', weight:0.5, opacity:1 };
           },
           onEachFeature: function(f, layer) {
-            var name = f.properties.NAME_EN || f.properties.NAME || '';
-            layer.bindTooltip(name, {
-              className: 'map-tt-country',
-              sticky:    true,
-              direction: 'top',
-              offset:    [0, -4]
-            });
-
+            var name      = f.properties.NAME_EN || f.properties.NAME || '';
             var code      = f.properties.ADM0_A3;
             var regionKey = countryToRegion[code];
+            var hasInfo   = !!countryInfo[code];
 
-            if (regionKey) {
-              var regionBounds = L.latLngBounds(regions[regionKey].bounds);
+            layer.bindTooltip(name, {
+              className: 'map-tt-country', sticky: true, direction: 'top', offset: [0, -4]
+            });
 
+            if (regionKey || hasInfo) {
               layer.on('mouseover', function() {
-                this.setStyle({
-                  fillColor:   '#0a200a',
-                  fillOpacity: 1,
-                  color:       '#39ff14',
-                  weight:      1.5,
-                  opacity:     0.75
-                });
+                this.setStyle({ fillColor:'#0a200a', fillOpacity:1, color:'#39ff14', weight:1.5, opacity:0.75 });
                 var el = this.getElement();
                 if (el) el.classList.add('country-glow');
+                // Update sidebar only if not locked to USA view
+                if (sbBase !== 'usa') {
+                  sbHover = code;
+                  renderSidebar();
+                }
               });
 
               layer.on('mouseout', function() {
-                this.setStyle({
-                  fillColor:   '#1a1a1a',
-                  fillOpacity: 1,
-                  color:       '#2e2e2e',
-                  weight:      0.5,
-                  opacity:     1
-                });
+                this.setStyle({ fillColor:'#1a1a1a', fillOpacity:1, color:'#2e2e2e', weight:0.5, opacity:1 });
                 var el = this.getElement();
                 if (el) el.classList.remove('country-glow');
+                if (sbBase !== 'usa') {
+                  sbHover = null;
+                  renderSidebar();
+                }
               });
 
-              layer.on('click', function() {
-                ignoreNextMapClick = true; // prevent map click from resetting view
-                currentRegion = regionKey;
-                map.flyToBounds(regionBounds, { padding: [40, 40], duration: 1.2 });
-              });
+              if (regionKey) {
+                var regionBounds = L.latLngBounds(regions[regionKey].bounds);
+                layer.on('click', function() {
+                  ignoreNextMapClick = true;
+                  currentRegion = regionKey;
+                  if (regionKey === 'usa') {
+                    sbBase  = 'usa';
+                    sbHover = null;
+                    renderSidebar();
+                  }
+                  map.flyToBounds(regionBounds, { padding: [40, 40], duration: 1.2 });
+                });
+              }
             }
           }
         }).addTo(map);
