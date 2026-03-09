@@ -193,7 +193,7 @@
       usa:       { codes: ['USA'],                                bounds: [[24.0, -125.5], [49.5,  -66.0]] },
       eastAsia:  { codes: ['JPN', 'CHN', 'HKG'],                 bounds: [[18.0,  97.0],  [50.0,  148.0]] },
       europe:    { codes: ['GBR', 'CZE', 'ESP', 'FRA', 'ITA'],   bounds: [[36.0, -10.0],  [60.0,   22.0]] },
-      caribbean: { codes: ['LCA', 'SXM', 'MAF', 'MEX'],          bounds: [[10.0, -93.0],  [28.0,  -55.0]] }
+      caribbean: { codes: ['LCA', 'SXM', 'MAF', 'MEX', 'CRI'],    bounds: [[8.0, -93.0],   [28.0,  -55.0]] }
     };
 
     var countryToRegion = {};
@@ -255,7 +255,8 @@
       ['Philipsburg',   'Sint Maarten',   18.0231, -63.0472],
       ['Cancún',        'Mexico',         21.1619, -86.8515],
       ['Hyderabad',     'India',          17.3850,  78.4867],
-      ['Tirupati',      'India',          13.6288,  79.4192]
+      ['Tirupati',      'India',          13.6288,  79.4192],
+      ['San José',      'Costa Rica',      9.9281,  -84.0907]
     ];
 
     intl.forEach(function(c) {
@@ -294,13 +295,25 @@
       ['Hartford',       'CT',      41.7658,  -72.6851, false],
       ['Beacon',         'NY',      41.5051,  -73.9696, false],
       ['Concord',        'MA',      42.4604,  -71.3489, false],
-      ['The Hamptons',   'NY',      40.9315,  -72.1859, false]
+      ['The Hamptons',   'NY',      40.9315,  -72.1859, false],
+      ['Montauk',        'NY',      41.0534,  -71.9566, false],
+      ['Buffalo',        'NY',      42.8864,  -78.8784, false],
+      ['Binghamton',     'NY',      42.0987,  -75.9179, false],
+      ['New Paltz',      'NY',      41.7462,  -74.0921, false],
+      ['Denver',         'CO',      39.7392, -104.9903, false],
+      ["Harpers Ferry",  'WV',      39.3251,  -77.7311, false],
+      ['Nashville',      'TN',      36.1627,  -86.7816, false],
+      ['Cape Cod',       'MA',      41.6688,  -70.2962, false],
+      ['Sarasota',       'FL',      27.3364,  -82.5307, false],
+      ['Bozeman',        'MT',      45.6770, -111.0429, false]
     ];
 
     var usParks = [
-      ['Shenandoah National Park',  'Virginia', 38.4755,  -78.4535],
-      ['Yellowstone National Park', 'Wyoming',  44.4280, -110.5885],
-      ['Everglades National Park',  'Florida',  25.2866,  -80.8987]
+      ['Shenandoah National Park',          'Virginia',   38.4755,  -78.4535],
+      ['Yellowstone National Park',          'Wyoming',    44.4280, -110.5885],
+      ['Everglades National Park',           'Florida',    25.2866,  -80.8987],
+      ['Fire Island National Seashore',      'New York',   40.7190,  -73.1357],
+      ['Gateway National Recreation Area',   'New York',   40.5618,  -74.0582]
     ];
 
     var usMarkers = [];
