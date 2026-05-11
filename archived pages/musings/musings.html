@@ -5,16 +5,16 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Musings — Ian Persaud</title>
   <meta name="description" content="Musings — Ian Persaud">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
 </head>
 <body>
 
   <nav>
-    <a href="index.html">[/home]</a>
-    <a href="now-playing.html">[/now playing]</a>
-    <a href="experience.html">[/experience]</a>
+    <a href="../../index.html">[/home]</a>
+    <a href="../../now-playing.html">[/now playing]</a>
+    <a href="../../experience.html">[/experience]</a>
     <a href="musings.html" class="active">[/musings]</a>
-    <a href="travels.html">[/travels]</a>
+    <a href="../../travels.html">[/travels]</a>
     <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">[&#9728;]</button>
   </nav>
   <p class="site-id">Ian Persaud</p>
@@ -33,7 +33,7 @@
       </div>
 
       <div class="musings-list">
-        <a class="musing-entry" href="musings/SITUATIONSHIP(S)-ep-release.html" data-topic="music">
+        <a class="musing-entry" href="posts/SITUATIONSHIP(S)-ep-release.html" data-topic="music">
           <div class="musing-meta">
             <span class="musing-date">02 March 2026, at 12:00PM EST</span>
             <span class="musing-topic">[music]</span>
@@ -41,7 +41,7 @@
           <h3 class="musing-title">SITUATIONSHIP(S) EP</h3>
           <p class="musing-subtitle">This 4 track EP, is mine and my collaborator's "hot take" on the cycles we experience within modern romance.</p>
         </a>
-        <a class="musing-entry" href="musings/my-room-is-a-mess-ep.html" data-topic="music">
+        <a class="musing-entry" href="posts/my-room-is-a-mess-ep.html" data-topic="music">
           <div class="musing-meta">
             <span class="musing-date">02 March 2026, at 9:03PM EST</span>
             <span class="musing-topic">[music]</span>
@@ -49,7 +49,7 @@
           <h3 class="musing-title">My Room Is a Mess EP</h3>
           <p class="musing-subtitle">I spent 1 week in the autumn at Stone Mountain Farms for my birthday, alone in a cabin with no wifi.</p>
         </a>
-        <a class="musing-entry" href="musings/SITUATIONSHIP(S)-critical-listening-session.html" data-topic="music">
+        <a class="musing-entry" href="posts/SITUATIONSHIP(S)-critical-listening-session.html" data-topic="music">
           <div class="musing-meta">
             <span class="musing-date">02 March 2026, at 1:37PM EST</span>
             <span class="musing-topic">[music]</span>
@@ -57,7 +57,7 @@
           <h3 class="musing-title">The EP is coming along nicely</h3>
           <p class="musing-subtitle">On Saturday, February 28, I hosted a listening session for my latest work with my collaborator, Blasé.</p>
         </a>
-        <a class="musing-entry" href="musings/its-nice-to-meet-you.html" data-topic="journal">
+        <a class="musing-entry" href="posts/its-nice-to-meet-you.html" data-topic="journal">
           <div class="musing-meta">
             <span class="musing-date">02 March 2026, at 10:01AM EST</span>
             <span class="musing-topic">[journal]</span>
@@ -93,7 +93,7 @@
     <span>&copy; <span id="year"></span> Ian Persaud</span>
   </footer>
 
-  <script src="assets/js/site.js"></script>
+  <script src="../../assets/js/site.js"></script>
   <script>
     // ── Topic filter — multi-select toggle ────────────────────────────────────
     const topicBtns = document.querySelectorAll('.topic-btn[data-filter]:not([data-filter="all"])');
@@ -144,7 +144,7 @@
       }
       return [...document.querySelectorAll('.musing-entry')].map(function(el) {
         return {
-          href:     el.href,                                          // absolute URL
+          href:     el.href,
           title:    el.querySelector('.musing-title').textContent.trim(),
           subtitle: el.querySelector('.musing-subtitle').textContent.trim(),
           dateStr:  el.querySelector('.musing-date').textContent.trim(),
@@ -201,17 +201,16 @@
 
     async function onNodeClick(el, entry) {
       var pane = document.getElementById('tl-reading-pane');
-      // Toggle off if same node clicked again
       if (activeNode === el) {
         el.classList.remove('tl-active');
         activeNode = null;
-        pane.innerHTML = '<p class="rp-placeholder">\u2190 select an entry to read</p>';
+        pane.innerHTML = '<p class="rp-placeholder">← select an entry to read</p>';
         return;
       }
       if (activeNode) activeNode.classList.remove('tl-active');
       activeNode = el;
       el.classList.add('tl-active');
-      pane.innerHTML = '<p class="rp-placeholder">loading\u2026</p>';
+      pane.innerHTML = '<p class="rp-placeholder">loading…</p>';
       try {
         var resp = await fetch(entry.href);
         if (!resp.ok) throw new Error('HTTP ' + resp.status);
@@ -232,18 +231,17 @@
         if (bodyEl) {
           out += '<div class="musing-body">' + bodyEl.innerHTML + '</div>';
         }
-        out += '<a class="rp-link" href="' + entry.href + '">read full post \u2192</a>';
+        out += '<a class="rp-link" href="' + entry.href + '">read full post →</a>';
         pane.innerHTML = out;
       } catch(e) {
         console.error('[timeline] fetch failed for', entry.href, e);
-        // Fallback: show what we already have from the DOM
         var out = '<div class="rp-musing-meta">';
         out += '<span class="musing-date">' + entry.dateStr + '</span>';
         out += ' <span class="musing-topic">[' + entry.topic + ']</span>';
         out += '</div>';
         out += '<h2 class="rp-title">' + entry.title + '</h2>';
         out += '<div class="musing-body"><p>' + entry.subtitle + '</p></div>';
-        out += '<a class="rp-link" href="' + entry.href + '">read full post \u2192</a>';
+        out += '<a class="rp-link" href="' + entry.href + '">read full post →</a>';
         pane.innerHTML = out;
       }
     }
@@ -272,7 +270,6 @@
       var positions = data.map(function(e) {
         return PAD + ((e.date.getTime() - tMin) / span) * (1 - 2 * PAD);
       });
-      // Apply minimum gap between adjacent positions
       for (var i = 1; i < positions.length; i++) {
         if (positions[i] - positions[i - 1] < MIN_GAP) {
           positions[i] = positions[i - 1] + MIN_GAP;
@@ -304,17 +301,15 @@
         var note = '<div class="tl-note"><strong>' + entry.title + '</strong>'
                  + '<p class="tl-month">' + formatTime(entry.date) + '</p>'
                  + '<p>[' + entry.topic + ']</p>'
-                 + '<a class="tl-read-link" href="' + entry.href + '">read post \u2192</a>'
+                 + '<a class="tl-read-link" href="' + entry.href + '">read post →</a>'
                  + '</div>';
         var stem = '<div class="tl-stem"></div>';
         var node = '<div class="tl-node">' + nodeLabel(entry.date) + '</div>';
 
-        // tl-above: note → stem → node (node at bottom = centerline)
-        // tl-below: node → stem → note (node at top = centerline)
         ev.innerHTML = isAbove ? note + stem + node : node + stem + note;
 
         ev.addEventListener('click', function(e) {
-          if (e.target.closest('a')) return; // let link navigate
+          if (e.target.closest('a')) return;
           onNodeClick(ev, entry);
         });
         track.appendChild(ev);
@@ -329,27 +324,24 @@
       var tlView   = document.getElementById('musings-tl-view');
       var showing = !tlView.hidden;
       if (showing) {
-        // Return to list
         tlView.hidden = true;
         listView.hidden = false;
         stopAutoScroll();
         this.textContent = '[timeline]';
       } else {
-        // Show timeline
         listView.hidden = true;
         tlView.hidden = false;
-        this.textContent = '[\u2190 list]';
+        this.textContent = '[← list]';
         buildMusingsTimeline();
       }
     });
 
-    // Auto-activate timeline if URL hash is #timeline
     if (location.hash === '#timeline') {
       document.getElementById('musings-tl-toggle').click();
       history.replaceState(null, '', location.pathname + location.search);
     }
   </script>
-  <script src="assets/js/player-bar.js"></script>
+  <script src="../../assets/js/player-bar.js"></script>
 
 </body>
 </html>

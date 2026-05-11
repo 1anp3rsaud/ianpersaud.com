@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Travels — Ian Persaud</title>
   <meta name="description" content="Travels — Ian Persaud">
-  <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="stylesheet" href="../../assets/css/styles.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <style>
     /* Full-width flex layout: sidebar + map */
@@ -199,10 +199,10 @@
 <body>
 
   <nav>
-    <a href="index.html">[/home]</a>
-    <a href="now-playing.html">[/now playing]</a>
-    <a href="experience.html">[/experience]</a>
-    <a href="musings.html">[/musings]</a>
+    <a href="../../index.html">[/home]</a>
+    <a href="../../now-playing.html">[/now playing]</a>
+    <a href="../../experience.html">[/experience]</a>
+    <a href="../../musings.html">[/musings]</a>
     <a href="travels.html" class="active">[/travels]</a>
     <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">[&#9728;]</button>
   </nav>
@@ -236,7 +236,7 @@
   </footer>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="assets/js/site.js"></script>
+  <script src="../../assets/js/site.js"></script>
   <script>
 
     // ── Map init ───────────────────────────────────────────────────────────────
@@ -340,6 +340,7 @@
       MEX: { name: 'Mexico',         cities: ['Cancún'] },
       IND: { name: 'India',          cities: ['Hyderabad', 'Tirupati'] },
       CRI: { name: 'Costa Rica',     cities: ['San José'] },
+      CAN: { name: 'Canada',         cities: ['Niagara Falls'] },
       USA: { name: 'United States',  cities: [] }
     };
 
@@ -416,7 +417,8 @@
       ['Cancún',        'Mexico',         21.1619, -86.8515],
       ['Hyderabad',     'India',          17.3850,  78.4867],
       ['Tirupati',      'India',          13.6288,  79.4192],
-      ['San José',      'Costa Rica',      9.9281,  -84.0907]
+      ['San José',      'Costa Rica',      9.9281,  -84.0907],
+      ['Niagara Falls', 'Canada',         43.0962,  -79.0377]
     ];
 
     intl.forEach(function(c) {
@@ -465,8 +467,10 @@
       ['Harpers Ferry',  'WV',      39.3251,  -77.7311, false],
       ['Nashville',      'TN',      36.1627,  -86.7816, false],
       ['Cape Cod',       'MA',      41.6688,  -70.2962, false],
-      ['Sarasota',       'FL',      27.3364,  -82.5307, false],
-      ['Bozeman',        'MT',      45.6770, -111.0429, false]
+      ['Sarasota',        'FL',      27.3364,  -82.5307, false],
+      ['St. Petersburg',  'FL',      27.7676,  -82.6403, false],
+      ['Bozeman',         'MT',      45.6770, -111.0429, false],
+      ['West Yellowstone','MT',      44.6602, -111.1041, false]
     ];
 
     var usParks = [
@@ -500,7 +504,7 @@
 
     // ── State boundaries layer ─────────────────────────────────────────────────
     var statesLayer = null;
-    fetch('assets/data/us-states.geojson')
+    fetch('../../assets/data/us-states.geojson')
       .then(function(r) { return r.json(); })
       .then(function(data) {
         statesLayer = L.geoJSON(data, {
@@ -570,7 +574,6 @@
     function buildCountryView(code) {
       if (!code || !countryInfo[code]) return buildWorldView();
       if (code === 'USA') {
-        // Hover preview — don't lock sbBase; click locks it
         var out = e('div', 'sb-title', 'United States');
         out += e('div', 'sb-stat', e('strong', '', statesVisited) + ' states');
         out += e('div', 'sb-stat', e('strong', '', usCitiesCount) + ' cities');
@@ -745,7 +748,7 @@
     });
 
     // ── GeoJSON world layer ────────────────────────────────────────────────────
-    fetch('assets/data/world.geojson')
+    fetch('../../assets/data/world.geojson')
       .then(function(r) { return r.json(); })
       .then(function(data) {
         L.geoJSON(data, {
@@ -768,7 +771,6 @@
                 this.setStyle({ fillColor:'#0a200a', fillOpacity:1, color:'#39ff14', weight:1.5, opacity:0.75 });
                 var el = this.getElement();
                 if (el) el.style.filter = buildGlow(countryCities[code] || 1);
-                // Update sidebar only if not locked to a region view
                 if (sbBase === 'world') {
                   sbHover = code;
                   renderSidebar();
@@ -808,7 +810,7 @@
       });
 
   </script>
-  <script src="assets/js/player-bar.js"></script>
+  <script src="../../assets/js/player-bar.js"></script>
 
 </body>
 </html>
