@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+  <!-- Face: 12 triangles from centre -->
+  <polygon points="50,50 50,4 73,10"  fill="#FCCA26"/>
+  <polygon points="50,50 73,10 91,27" fill="#F0BB14"/>
+  <polygon points="50,50 91,27 96,50" fill="#FCCA26"/>
+  <polygon points="50,50 96,50 91,73" fill="#F0BB14"/>
+  <polygon points="50,50 91,73 73,90" fill="#FCCA26"/>
+  <polygon points="50,50 73,90 50,96" fill="#F0BB14"/>
+  <polygon points="50,50 50,96 27,90" fill="#FCCA26"/>
+  <polygon points="50,50 27,90 9,73"  fill="#F0BB14"/>
+  <polygon points="50,50 9,73 4,50"   fill="#FCCA26"/>
+  <polygon points="50,50 4,50 9,27"   fill="#F0BB14"/>
+  <polygon points="50,50 9,27 27,10"  fill="#FCCA26"/>
+  <polygon points="50,50 27,10 50,4"  fill="#F0BB14"/>
+  <!-- Sad brows: outer corners lifted -->
+  <polygon points="22,36 30,29 38,35 30,38" fill="#3A1A00"/>
+  <polygon points="62,35 70,29 78,36 70,38" fill="#3A1A00"/>
+  <!-- Closed sad eyes -->
+  <polygon points="22,46 30,42 38,46 30,52" fill="#3A1A00"/>
+  <polygon points="62,46 70,42 78,46 70,52" fill="#3A1A00"/>
+  <!-- Tear streams -->
+  <polygon points="26,52 22,66 30,63" fill="#4DAAFF"/>
+  <polygon points="22,66 25,76 30,63" fill="#2A88E0"/>
+  <polygon points="70,52 74,66 66,63" fill="#4DAAFF"/>
+  <polygon points="74,66 71,76 66,63" fill="#2A88E0"/>
+  <!-- Crying mouth -->
+  <polygon points="34,72 50,78 66,72 58,65 42,65" fill="#3A1A00"/>
+  <polygon points="36,72 50,77 64,72 58,66 42,66" fill="#CC2200"/>
+  <polygon points="42,66 50,77 58,66" fill="#AA0000"/>
+</svg>

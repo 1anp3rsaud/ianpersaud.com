@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+  <!-- Face: 12 triangles from centre -->
+  <polygon points="50,50 50,4 73,10"  fill="#CCBC48"/>
+  <polygon points="50,50 73,10 91,27" fill="#B8A830"/>
+  <polygon points="50,50 91,27 96,50" fill="#CCBC48"/>
+  <polygon points="50,50 96,50 91,73" fill="#B8A830"/>
+  <polygon points="50,50 91,73 73,90" fill="#CCBC48"/>
+  <polygon points="50,50 73,90 50,96" fill="#B8A830"/>
+  <polygon points="50,50 50,96 27,90" fill="#CCBC48"/>
+  <polygon points="50,50 27,90 9,73"  fill="#B8A830"/>
+  <polygon points="50,50 9,73 4,50"   fill="#CCBC48"/>
+  <polygon points="50,50 4,50 9,27"   fill="#B8A830"/>
+  <polygon points="50,50 9,27 27,10"  fill="#CCBC48"/>
+  <polygon points="50,50 27,10 50,4"  fill="#B8A830"/>
+  <!-- Flat brows -->
+  <polygon points="22,36 30,33 38,36 30,38" fill="#3A3000"/>
+  <polygon points="62,36 70,33 78,36 70,38" fill="#3A3000"/>
+  <!-- Half-closed eyes: dark iris + heavy lid covering top half -->
+  <polygon points="22,50 30,45 38,50 30,56" fill="#3A3000"/>
+  <polygon points="22,50 30,45 38,50"       fill="#A89828"/>
+  <polygon points="62,50 70,45 78,50 70,56" fill="#3A3000"/>
+  <polygon points="62,50 70,45 78,50"       fill="#A89828"/>
+  <!-- Open exhausted mouth -->
+  <polygon points="36,70 50,65 64,70 58,80 42,80" fill="#3A3000"/>
+  <polygon points="38,71 50,66 62,71 56,79 44,79" fill="#C06000"/>
+  <polygon points="44,79 50,66 56,79" fill="#993000" opacity="0.6"/>
+</svg>

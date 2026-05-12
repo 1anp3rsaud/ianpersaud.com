@@ -9,64 +9,17 @@
 </head>
 <body>
 
-  <nav>
-    <a href="#" class="active">[/home]</a>
-    <a href="#experience">[/experience]</a>
-    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">[&#9728;]</button>
-  </nav>
-
   <main>
     <div class="hero">
       <div class="headshot-wrap">
         <img class="headshot" src="assets/img/headshot_mar2026.jpg" alt="Ian Persaud">
       </div>
       <div class="hero-body">
-        <h1 class="hero-name">Ian Persaud</h1>
+        <h1 class="hero-name">Ian Persaud<button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">[&#9728;]</button></h1>
         <p class="text-muted"><em>born, raised, &amp; based in Queens NY</em></p>
         <p>I'm a manager of products, programs, and projects in the tech space with a predilection for solving hard problems and building complex things; I love it the most when these two processes are intertwined.</p>
         <p>There is art in balancing the simple with the complex, the minimal with the maximal, the rough with the refined.</p>
         <p>I feel most beautiful when I have big ideas and I take a step down the long runway, and I feel most grateful when I have the opportunity to share the ideas and the journey to their fruition.</p>
-      </div>
-    </div>
-
-    <hr class="section-divider">
-
-    <div class="now-grid" id="now">
-      <div class="now-panel">
-        <h3>Current Studies</h3>
-        <ul class="now-list">
-          <li>Web development — how to display a lot of information elegantly, aesthetically, purposefully</li>
-          <li>Data analytics — SQL to close the gap between a question and an answer</li>
-          <li>Building out my Studio Business — Silver Lining Collective. My first business!</li>
-          <li>Wrapping up work on an EP for release this spring &amp; summer with a close collaborator — diving deeper into world building with clothing, USBs, and other physical merchandise</li>
-        </ul>
-      </div>
-      <div class="now-panel">
-        <h3>Now Reading</h3>
-        <ul class="now-list">
-          <li><em>The Souls of Black Folk</em> — W.E.B. Du Bois</li>
-          <li><em>A People's History of the United States</em> — Howard Zinn</li>
-          <li><em>Man and Society, Vol. 1</em> — John Plamenatz</li>
-          <li><em>The Dark Forest</em> — Liu Cixin</li>
-          <li><em>The Castle</em> — Franz Kafka</li>
-        </ul>
-        <a href="https://www.goodreads.com/ianreadsb00ks" target="_blank" rel="noopener">more about what I'm reading on goodreads</a>
-      </div>
-      <div class="now-panel">
-        <h3>Things I Collect</h3>
-        <ul class="now-list">
-          <li>Books — I have a small library, I love a good, old hardcover!</li>
-          <li>Bookmarks — to go with the books, duh. But also they document all the book stores I've been to.</li>
-          <li>Vinyls — I love to grab something old, unknown. That's how I discover new music more than via algorithm.</li>
-          <li>Wires — I have way too many. Don't know when I'll need em but I have em just in case.</li>
-        </ul>
-      </div>
-      <div class="now-panel">
-        <h3>Recent Wins</h3>
-        <ul class="now-list">
-          <li>Incorporated studio business</li>
-          <li>Completed PMP</li>
-        </ul>
       </div>
     </div>
 
@@ -149,6 +102,40 @@
       </div>
     </section>
 
+    <hr class="section-divider">
+
+    <div class="now-grid" id="now">
+      <div class="now-panel now-panel--solo">
+        <h3>Now Reading</h3>
+        <ul class="now-list">
+          <li><em>The Souls of Black Folk</em> — W.E.B. Du Bois</li>
+          <li><em>A People's History of the United States</em> — Howard Zinn</li>
+          <li><em>Man and Society, Vol. 1</em> — John Plamenatz</li>
+          <li><em>The Dark Forest</em> — Liu Cixin</li>
+          <li><em>The Castle</em> — Franz Kafka</li>
+        </ul>
+        <a href="https://www.goodreads.com/ianreadsb00ks" target="_blank" rel="noopener">more about what I'm reading on goodreads</a>
+      </div>
+      <div class="now-panel">
+        <h3>Current Studies</h3>
+        <ul class="now-list">
+          <li>Web development — how to display a lot of information elegantly, aesthetically, purposefully</li>
+          <li>Data analytics — SQL to close the gap between a question and an answer</li>
+          <li>Building out my Studio Business — Silver Lining Collective. My first business!</li>
+          <li>Wrapping up work on an EP for release this spring &amp; summer with a close collaborator — diving deeper into world building with clothing, USBs, and other physical merchandise</li>
+        </ul>
+      </div>
+      <div class="now-panel">
+        <h3>Things I Collect</h3>
+        <ul class="now-list">
+          <li>Books — I have a small library, I love a good, old hardcover!</li>
+          <li>Bookmarks — to go with the books, duh. But also they document all the book stores I've been to.</li>
+          <li>Vinyls — I love to grab something old, unknown. That's how I discover new music more than via algorithm.</li>
+          <li>Wires — I have way too many. Don't know when I'll need em but I have em just in case.</li>
+        </ul>
+      </div>
+    </div>
+
   </main>
 
   <footer>
@@ -160,7 +147,7 @@
   </footer>
 
   <script src="assets/js/site.js"></script>
-  <script src="assets/js/player-bar.js"></script>
+  <div style="position:fixed;bottom:0;left:0;right:0;height:2px;background:var(--tg);box-shadow:0 -2px 20px rgba(57,255,20,0.45),0 -10px 50px rgba(57,255,20,0.18);z-index:500;" aria-hidden="true"></div>
   <script>
     document.querySelectorAll('.edu-bar').forEach(function(bar) {
       var header = bar.querySelector('.edu-bar-header');
@@ -173,6 +160,244 @@
         toggle.setAttribute('aria-expanded', String(!isOpen));
       });
     });
+  </script>
+
+  <script>
+  (function () {
+
+    // ── Console Easter Egg ─────────────────────────────────────────────────
+    var art = [
+      '⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⡋⠉⣡⣴⣶⣾⣶⣶⣷⣶⣬⡉⢛⠛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿',
+      '⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⣁⣤⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣶⣶⣤⣈⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿',
+      '⣿⣿⣿⣿⣿⣿⠿⢋⣄⣼⠟⣉⣩⣭⣍⡙⠻⣿⣿⣿⣿⣿⣿⣿⠟⢋⣉⣭⣭⣉⠻⣧⣤⣝⠿⣿⣿⣿⣿⣿⣿',
+      '⣿⣿⣿⣿⡿⢃⣴⣿⣿⢁⡾⢋⣤⡀⢀⠹⣦⠹⣿⣿⣿⣿⣿⠃⣴⢋⣄⠀⠄⠙⢷⡘⣿⣿⡗⠜⢿⣿⣿⣿⣿',
+      '⣿⣿⣿⠏⣴⣿⣿⣿⣧⢼⠇⠘⠛⠁⠀⠀⣿⡆⣿⣿⣿⣿⣿⢰⡏⠘⠿⠃⠀⡄⠸⠇⢸⣿⣿⣿⣦⠹⣿⣿⣿',
+      '⣿⣿⠋⣼⣿⣿⣿⣭⡶⠶⠛⢿⣿⣿⣷⣶⣦⣬⣿⣿⣿⣿⣿⣤⣴⣶⣿⣿⣿⣿⡿⢶⣶⣬⣙⣿⣿⣷⡘⣿⣿',
+      '⣿⠇⣼⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣾⣷⣶⣿⣿⣿⣿⣿⣿⣧⠹⣿',
+      '⡟⣸⣿⢟⣽⣿⣿⣿⣿⣿⣿⣿⡿⠿⠿⢟⣛⣛⣛⣛⣛⣛⣛⣛⣛⡛⠿⠿⣿⣿⣿⣿⣿⣿⣿⣿⣝⢿⣿⣇⢿',
+      '⠃⣿⣧⣿⣿⣿⢳⡿⠛⠛⠉⠀⠀⢀⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⠀⠈⠉⠙⠻⢿⡿⣿⣿⣿⣿⣿⢸',
+      '⠀⣿⣿⡿⢟⡃⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⢹⣿⣿⣿⣿⡀',
+      '⢰⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⣿⣿⣿⣿⣿⠃',
+      '⠀⣿⡿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠘⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠁⠀⠀⠀⠀⠀⠀⣸⣿⣿⣿⣿⣿⢰',
+      '⡆⢿⣧⢹⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠈⠛⠿⢿⣿⣿⣿⣿⣿⡿⠿⠋⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣿⡿⣸',
+      '⣷⠀⢿⣇⢿⣿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⣄⣀⣀⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣿⡿⣹⡿⢃⣿',
+      '⣿⣧⠙⢿⣎⢿⣿⣿⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠙⠿⠿⠿⠋⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⣿⣿⡿⣱⣿⠀⣾⣿',
+      '⣿⣿⣷⡈⢿⣾⣿⣿⣿⣿⣦⡀⠀⠀⠀⠀⢠⣶⣶⣶⣶⣶⣶⣶⡄⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣱⡟⢉⣾⣿⣿',
+      '⣿⣿⣿⣿⣌⢿⣿⣿⣿⣿⣿⣿⣷⣤⣀⠀⢾⣿⣿⣿⣿⣿⣿⣿⡇⠀⣀⣤⣾⣿⣿⣿⣿⣿⣿⠟⣡⣾⣿⣿⣿',
+      '⣿⣿⣿⣿⣿⣧⡙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣬⣭⣭⣯⣭⣭⣥⣶⣿⣿⣿⣿⣿⣿⣿⣿⡿⣡⣾⣿⣿⣿⣿⣿',
+      '⣿⣿⣿⣿⣿⣿⣿⣷⣌⡻⢿⣿⣿⣿⣿⣯⣛⠻⠿⠿⡟⠛⠿⠟⣛⣭⣿⣿⣿⣿⡿⢟⣥⣾⣿⣿⣿⣿⣿⣿⣿',
+      '⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣭⣙⡛⠿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠟⣛⣥⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿',
+      '⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⣾⣽⣿⣿⣿⣿⣥⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿'
+    ].join('\n');
+    console.log('%c' + art, 'font-family:monospace;font-size:9px;line-height:1.2;color:#39ff14;');
+    console.log('\n%cFancy meeting you here.\n', 'color:#39ff14;font-family:monospace;font-size:14px;font-weight:bold;');
+
+    // ── Inject Easter Egg Styles ───────────────────────────────────────────
+    var eeStyle = document.createElement('style');
+    eeStyle.textContent = [
+      '@keyframes ee-spin-shake {',
+      '  0%   { transform: rotate(0deg)    scale(1);    }',
+      '  25%  { transform: rotate(270deg)  scale(1.08) translateX(-4px); }',
+      '  50%  { transform: rotate(540deg)  scale(1)    translateX(4px);  }',
+      '  75%  { transform: rotate(810deg)  scale(1.08) translateX(-4px); }',
+      '  100% { transform: rotate(1080deg) scale(1);    }',
+      '}',
+      '.ee-spinning { animation: ee-spin-shake 1.2s ease-in-out forwards; cursor: not-allowed; }',
+      '.ee-overlay  { position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:9999;display:flex;align-items:center;justify-content:center; }',
+      '.ee-modal    { background:var(--bg);border:1px solid var(--border);padding:2rem;max-width:420px;width:90%;font-family:"Geist Mono",monospace;font-size:0.85rem;line-height:1.7; }',
+      '.ee-modal p  { margin:0 0 1rem; }',
+      '.ee-modal textarea { width:100%;height:90px;background:none;border:1px solid var(--border);color:var(--text);font-family:"Geist Mono",monospace;font-size:0.78rem;padding:0.5rem;resize:none;box-sizing:border-box; }',
+      '.ee-btn      { padding:0.5rem 1rem;background:none;border:1px solid var(--border);color:var(--text);font-family:"Geist Mono",monospace;font-size:0.82rem;cursor:pointer; }',
+      '.ee-btn:hover { border-color:var(--tg);color:var(--tg); }',
+      '.ee-btn-tg   { border-color:var(--tg);color:var(--tg); }',
+      '.ee-row      { display:flex;gap:0.75rem; }',
+      '.ee-row .ee-btn { flex:1; }',
+      '.ee-hint     { color:var(--muted);font-size:0.78rem;font-style:italic;margin-bottom:1rem; }',
+      '.ee-error    { color:#ff4444;font-size:0.75rem;margin-top:0.5rem;display:none; }',
+      '.ee-success  { color:var(--tg); }'
+    ].join('\n');
+    document.head.appendChild(eeStyle);
+
+    // ── Headshot: 5 clicks in 1 second → spin + shake ─────────────────────
+    var wrap = document.querySelector('.headshot-wrap');
+    var clickLog = [];
+    wrap.style.cursor = 'pointer';
+    wrap.addEventListener('click', function () {
+      var now = Date.now();
+      clickLog = clickLog.filter(function (t) { return now - t < 1000; });
+      clickLog.push(now);
+      if (clickLog.length >= 5) {
+        clickLog = [];
+        wrap.classList.add('ee-spinning');
+        wrap.addEventListener('animationend', function cb() {
+          wrap.classList.remove('ee-spinning');
+          wrap.removeEventListener('animationend', cb);
+        });
+      }
+    });
+
+    // ── Theme toggle madness ──────────────────────────────────────────────
+    var toggleBtn = document.getElementById('theme-toggle');
+    var toggleCount = 0;
+    var stage      = 0;     // 0 = normal, 1 = warned
+    var banned     = false;
+    var modalOpen  = false;
+    var runaway    = false;
+
+    function removeOverlay(overlay) {
+      if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+      modalOpen = false;
+    }
+
+    function makeOverlay() {
+      var el = document.createElement('div');
+      el.className = 'ee-overlay';
+      return el;
+    }
+
+    function makeModal(html) {
+      var el = document.createElement('div');
+      el.className = 'ee-modal';
+      el.innerHTML = html;
+      return el;
+    }
+
+    function showWarnModal() {
+      modalOpen = true;
+      var overlay = makeOverlay();
+      var modal = makeModal(
+        '<p style="font-size:1.05rem;">PLEASE make up your mind 😭😭😭</p>' +
+        '<p style="color:var(--muted);">Pick one. Final answer.</p>' +
+        '<div class="ee-row">' +
+          '<button class="ee-btn" id="ee-pick-light">Light</button>' +
+          '<button class="ee-btn ee-btn-tg" id="ee-pick-dark">Dark</button>' +
+        '</div>'
+      );
+      overlay.appendChild(modal);
+      document.body.appendChild(overlay);
+
+      modal.querySelector('#ee-pick-light').addEventListener('click', function () {
+        document.documentElement.classList.remove('dark');
+        removeOverlay(overlay);
+        stage = 1; toggleCount = 0;
+      });
+      modal.querySelector('#ee-pick-dark').addEventListener('click', function () {
+        document.documentElement.classList.add('dark');
+        removeOverlay(overlay);
+        stage = 1; toggleCount = 0;
+      });
+    }
+
+    function showBannedModal() {
+      if (modalOpen) return;
+      modalOpen = true;
+      banned = true;
+      document.documentElement.classList.add('dark');
+
+      var overlay = makeOverlay();
+      var modal = makeModal(
+        '<p style="color:#ff4444;font-size:1.1rem;letter-spacing:0.05em;">BANNED</p>' +
+        '<p>NO MORE LIGHT MODE FOR YOU.</p>' +
+        '<button class="ee-btn" id="ee-sorry" style="width:100%;">OK I\'m sorry</button>'
+      );
+      overlay.appendChild(modal);
+      document.body.appendChild(overlay);
+
+      modal.querySelector('#ee-sorry').addEventListener('click', function () {
+        modal.innerHTML =
+          '<p>Type the following to be forgiven:</p>' +
+          '<p class="ee-hint">"I am very sorry I was indecisive about my light or dark mode preference. Please forgive me."</p>' +
+          '<textarea id="ee-apology" placeholder="Type here…"></textarea>' +
+          '<button class="ee-btn" id="ee-submit" style="width:100%;margin-top:0.6rem;">Submit</button>' +
+          '<p class="ee-error" id="ee-err">That\'s not quite right. Try again.</p>';
+
+        modal.querySelector('#ee-submit').addEventListener('click', function () {
+          var typed  = modal.querySelector('#ee-apology').value.trim();
+          var target = 'I am very sorry I was indecisive about my light or dark mode preference. Please forgive me.';
+          if (typed === target) {
+            modal.innerHTML =
+              '<p class="ee-success">Ok, since you were so nice about it, you can have the light mode back.</p>' +
+              '<button class="ee-btn ee-btn-tg" id="ee-forgiven" style="width:100%;margin-top:0.75rem;">🙏 Thank you</button>';
+            modal.querySelector('#ee-forgiven').addEventListener('click', function () {
+              banned = false; stage = 0; toggleCount = 0;
+              removeOverlay(overlay);
+              // Button runs away from the cursor
+              runaway = true;
+              var r = toggleBtn.getBoundingClientRect();
+              toggleBtn.style.cssText += ';position:fixed;left:' + r.left + 'px;top:' + r.top + 'px;z-index:9998;margin:0;transition:left 0.1s ease,top 0.1s ease;';
+            });
+          } else {
+            var err = modal.querySelector('#ee-err');
+            err.style.display = 'block';
+          }
+        });
+      });
+    }
+
+    // Emoji popup — cycles on each runaway-button click
+    var eeClickIdx = 0;
+    var eeImgs = ['assets/img/ee-cry.svg', 'assets/img/ee-angry.svg', 'assets/img/ee-tired.svg'];
+
+    function showEmojiPopup(src) {
+      var pop = document.createElement('div');
+      pop.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10000;background:var(--bg);border:1px solid var(--border);padding:1.25rem;text-align:center;';
+      var img = document.createElement('img');
+      img.src = src; img.width = 100; img.height = 100;
+      pop.appendChild(img);
+      document.body.appendChild(pop);
+      var dismiss = function () { if (pop.parentNode) pop.parentNode.removeChild(pop); };
+      setTimeout(dismiss, 1800);
+      pop.addEventListener('click', dismiss);
+    }
+
+    toggleBtn.addEventListener('click', function () {
+      if (!runaway) return;
+      showEmojiPopup(eeImgs[eeClickIdx % 3]);
+      eeClickIdx++;
+    });
+
+    // Runaway button — flees the cursor after forgiveness
+    document.addEventListener('mousemove', function (e) {
+      if (!runaway) return;
+      var r    = toggleBtn.getBoundingClientRect();
+      var cx   = r.left + r.width  / 2;
+      var cy   = r.top  + r.height / 2;
+      var dx   = cx - e.clientX;
+      var dy   = cy - e.clientY;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 130) {
+        var angle = Math.atan2(dy, dx) + (Math.random() - 0.5) * 0.6;
+        var nx = cx + Math.cos(angle) * 110 - r.width  / 2;
+        var ny = cy + Math.sin(angle) * 110 - r.height / 2;
+        nx = Math.max(8, Math.min(window.innerWidth  - r.width  - 8, nx));
+        ny = Math.max(8, Math.min(window.innerHeight - r.height - 8, ny));
+        toggleBtn.style.left = nx + 'px';
+        toggleBtn.style.top  = ny + 'px';
+      }
+    });
+
+    // Capture phase — fires before site.js bubble listener
+    toggleBtn.addEventListener('click', function (e) {
+      if (banned) {
+        e.stopImmediatePropagation();
+        document.documentElement.classList.add('dark');
+        showBannedModal();
+        return;
+      }
+      if (stage === 1) {
+        e.stopImmediatePropagation();
+        showBannedModal();
+        return;
+      }
+      // stage === 0: count normally, let site.js toggle the theme
+      toggleCount++;
+      if (toggleCount >= 7) {
+        e.stopImmediatePropagation();
+        showWarnModal();
+      }
+    }, true);
+
+  }());
   </script>
 
 </body>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+  <!-- Face: 12 triangles from centre -->
+  <polygon points="50,50 50,4 73,10"  fill="#E84030"/>
+  <polygon points="50,50 73,10 91,27" fill="#D02818"/>
+  <polygon points="50,50 91,27 96,50" fill="#E84030"/>
+  <polygon points="50,50 96,50 91,73" fill="#D02818"/>
+  <polygon points="50,50 91,73 73,90" fill="#E84030"/>
+  <polygon points="50,50 73,90 50,96" fill="#D02818"/>
+  <polygon points="50,50 50,96 27,90" fill="#E84030"/>
+  <polygon points="50,50 27,90 9,73"  fill="#D02818"/>
+  <polygon points="50,50 9,73 4,50"   fill="#E84030"/>
+  <polygon points="50,50 4,50 9,27"   fill="#D02818"/>
+  <polygon points="50,50 9,27 27,10"  fill="#E84030"/>
+  <polygon points="50,50 27,10 50,4"  fill="#D02818"/>
+  <!-- Angry V-brows: inner corners low -->
+  <polygon points="20,37 30,28 39,38 28,41" fill="#6A0000"/>
+  <polygon points="61,38 70,28 80,37 72,41" fill="#6A0000"/>
+  <!-- Squinting eyes -->
+  <polygon points="22,48 30,44 38,48 30,54" fill="#6A0000"/>
+  <polygon points="62,48 70,44 78,48 70,54" fill="#6A0000"/>
+  <!-- Tight frown with teeth -->
+  <polygon points="34,70 50,76 66,70 62,63 38,63" fill="#6A0000"/>
+  <polygon points="36,70 50,75 64,70 60,64 40,64" fill="#F0E8D0"/>
+  <polygon points="42,64 50,75 58,64" fill="#CCC4B0" opacity="0.5"/>
+</svg>
